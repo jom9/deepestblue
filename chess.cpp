@@ -6,7 +6,14 @@
 using namespace std;
 
 
-
+char opColor(char c){ //method that inverts the colors
+	if(c='w'){
+		return 'b';
+	}
+	else{
+		return 'w';
+	}
+}
 class Piece{
 	public:
 		int file,rank;
@@ -29,7 +36,7 @@ class Piece{
 			if(y>7 || y<0){ return false;}
 			return true;
 		}
-		virtual void updateLegalMove(){
+		virtual void updateLegalMove(Square board[8][8]){
 		// possible moves, empty for parent class, tuples
 		}
 };
@@ -38,9 +45,51 @@ class King:public Piece{
 	public:
 
 		King(char c,int x,int y):Piece(c,x,y){rep = 'K'; generic = false;	}
+		void updateLegalMove(Square board[8][8]){
+			this->legalMoves.erase;
+			if(this->inside(this->file-1,this->rank+1)){ //checks upper left
+				if(this->color != board[file-1][rank+1].piece.color){
+					this->legalMoves.push_front( make_tuple( file-1,rank+1));
+				}
+			}
+			else if(this->inside(this->file,this->rank+1)) { // checks fwd
+				if(this->color != board[file][rank+1].piece.color){
+					this->legalMoves.push_front( make_tuple( file,rank+1));
+				}
+			}
+			else if(this->inside(this->file+1,this->rank+1)) { // checks upper righ
+				if(this->color != board[file+1][rank+1].piece.color){
+					this->legalMoves.push_front( make_tuple( file+1,rank+1));
+				}
+			}
+			else if(this->inside(this->file-1,this->rank.piece.color)) { //checks left
+				if(this->color != board[file-1][rank]){
+					this->legalMoves.push_front( make_tuple( file-1,rank));
+				}
+			}
+			else if(this->inside(this->file+1,this->rank)) {// checks right
+				if(this->color != board[file-1][rank].piece.color){
+					this->legalMoves.push_front( make_tuple( file+1,rank));
+				}
+			}
+			else if(this->inside(this->file-1,this->rank-1)) {//back left
+				if(this->color != board[file-1][rank-1].piece.color){
+					this->legalMoves.push_front( make_tuple( file-1,rank-1));
+				}
+			}
+			else if(this->inside(this->file,this->rank-1)) { // back
+				if(this->color != board[file][rank-1].piece.color){
+					this->legalMoves.push_front( make_tuple( file,rank-1));
+				}
+			}
+			else if(this->inside(this->file+1,this->rank-1)) { //back right
+				if(this->color != board[file+1][rank-1].piece.color){
+					this->legalMoves.push_front( make_tuple( file+1,rank-1));
+				}
+			}
 
 
-
+		}
 };
 class Knight:public Piece{
 	public:
@@ -52,24 +101,181 @@ class Pawn:public Piece{
 	public:
 
 		Pawn(char c,int x,int y):Piece(c,x,y){rep ='P'; generic = false;	}
-
+		void updateLegalMove( Square board[8][8]){
+			if(this->inside(file-1,rank+1)){
+				if(this->color != opColor(board[file-1][rank+1].piece.color)){
+					this->legalMoves.push_front(make_tuple(file-1,rank+1));
+				}
+			}
+			else if(this->inside(file,rank+1)){
+				if(this->color != board[file][rank+1].piece.color){
+					this->legalMoves.push_front(make_tuple(file,rank+1));
+				}
+			}
+			else if(this->inside(file+1,rank+1)){
+				if(this->color != opColor(board[file+1][rank+1].piece.color)){
+					this->legalMoves.push_front(make_tuple(file+1,rank+1));
+				}
+			}
+		}
 };
 class Rook:public Piece{
 	public:
 
 		Rook(char c,int x,int y):Piece(c,x,y){rep ='R';	 generic = false;}
+		void updateLegalMove(Square board[8][8]){
+			int i=1; // next fur while loops iterater through
+			while(this->inside(this->file + i, this->rank)){
+				if(this->color != board[file+i][rank] ){
+					if(this->color == opColor(board[file+i][rank].piece.color)){
+							this->legalMoves.push_front(make_tuple(file+i,rank));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file+i,rank));
+					}
+				}
+				else{
+					break;
+				}
 
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file - i, this->rank)){
+				if(this->color != board[file-i][rank] ){
+					if(this->color == opColor(board[file-i][rank].piece.color)){
+							this->legalMoves.push_front(make_tuple(file-i,rank));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file-i,rank));
+					}
+				}
+				else{
+					break;
+				}
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file , this->rank+i)){
+				if(this->color != board[file][rank+i] ){
+					if(this->color == opColor(board[file][rank+i].piece.color)){
+							this->legalMoves.push_front(make_tuple(file,rank+i));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file,rank+i));
+					}
+				}
+				else{
+					break;
+				}
+
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file , this->rank-i)){
+				if(this->color != board[file][rank-i] ){
+					if(this->color == opColor(board[file][rank+i].piece.color)){
+							this->legalMoves.push_front(make_tuple(file,rank-i));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file,rank-i));
+					}
+				}
+				else{
+					break;
+				}
+
+
+				i++;
+			}
+
+
+		}
 };
 class Bishop:public Piece{
 	public:
 
 		Bishop(char c,int x,int y):Piece(c,x,y){rep ='B';	 generic = false;}
-
+void
 };
 class Queen:public Piece{
 	public:
 
 		Queen(char c,int x,int y):Piece(c,x,y){rep ='Q'; generic = false;	}
+		void updateLegalMove(Square board[8][8]){
+			int i=1;
+			while(this->inside(this->file + i, this->rank)){
+				if(this->color != board[file+i][rank] ){
+					if(this->color == opColor(board[file+i][rank].piece.color)){
+							this->legalMoves.push_front(make_tuple(file+i,rank));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file+i,rank));
+					}
+				}
+				else{
+					break;
+				}
+
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file - i, this->rank)){
+				if(this->color != board[file-i][rank] ){
+					if(this->color == opColor(board[file-i][rank].piece.color)){
+							this->legalMoves.push_front(make_tuple(file-i,rank));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file-i,rank));
+					}
+				}
+				else{
+					break;
+				}
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file , this->rank+i)){
+				if(this->color != board[file][rank+i] ){
+					if(this->color == opColor(board[file][rank+i].piece.color)){
+							this->legalMoves.push_front(make_tuple(file,rank+i));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file,rank+i));
+					}
+				}
+				else{
+					break;
+				}
+
+
+				i++;
+			}
+			i=1;
+			while(this->inside(this->file , this->rank-i)){
+				if(this->color != board[file][rank-i] ){
+					if(this->color == opColor(board[file][rank+i].piece.color)){
+							this->legalMoves.push_front(make_tuple(file,rank-i));
+							break;
+					}else{
+						this->legalMoves.push_front(make_tuple(file,rank-i));
+					}
+				}
+				else{
+					break;
+				}
+
+
+				i++;
+			}
+
+
+		}
 
 };
 
@@ -177,25 +383,29 @@ class Board{
 				}
 				else if(currentPlayer == 'w'){
 					if(board[xs][ys].piece.color == 'b'){
-						cout<<"Not your piece";
+						cout<<"Not your piece\n";
 					}
 					else{
 						Piece place =board[xd][yd].piece;
 						board[xd][yd].piece =	board[xs][ys].piece ;
 						board[xs][ys].piece =  place;
 					}
+					currentPlayer = 'b';
 				}
 				else{
 					if(board[xs][ys].piece.color == 'w'){
-						cout<<"Not your piece";
+						cout<<"Not your piece\n";
 					}
 					else{
 						Piece place =board[xd][yd].piece;
 						board[xd][yd].piece =	board[xs][ys].piece ;
 						board[xs][ys].piece =  place;
 					}
+					currentPlayer = 'w';
+					turnNum++;
 
 				}
+
 			}
 };
 int main(){
@@ -204,8 +414,10 @@ int main(){
 	b.printBoard();
 	int xs,ys,xd,yd;
 	while(true){
+		cout<<"Enter Move\n";
 		cin>>xs>>ys>>xd>>yd;
 		if(xs == -1 && ys == -1 && xd == -1 && yd == -1){
+
 			cout<<"Done!";
 			break;
 		}

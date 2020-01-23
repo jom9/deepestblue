@@ -6,11 +6,14 @@
 using namespace std;
 
 char opColor(char c){ //method that inverts the colors
-	if(c='w'){
+	if(c=='w'){
 		return 'b';
 	}
-	else{
+	else if(c=='b'){
 		return 'w';
+	}
+	else{
+		return c;
 	}
 }
 Piece::Piece(){rep = 'X';}
@@ -73,6 +76,9 @@ void Piece::updateLegalMoves(Square board[8][8]){
 			P.updateLegalMoves(board);
 			legalMoves = P.legalMoves;
 			break;
+		}
+		default:{
+
 		}
 	}
 }// possible moves, empty for parent class, tuples
@@ -182,34 +188,97 @@ void Knight::updateLegalMoves(Square board[8][8]){
 		}
 Pawn::Pawn(char c,int x,int y):Piece(c,x,y){rep ='P'; generic = false;	}
 			void Pawn::updateLegalMoves( Square board[8][8]){
+				if(color == 'w'){
+
 				this->legalMoves.clear();
 					if(firstmove){
 						if(this->inside(file,rank+2)){
-							if(this->color != board[file][rank+2].piece.color){
+							if( board[file][rank+2].piece.rep == 'X'){
 								this->legalMoves.push_front(make_tuple(file,rank+2));
-								firstmove = false;
+
+								this->firstmove = false;
 							}
 						}
 					}
 
+
 					if(this->inside(file-1,rank+1)){
-						if(this->color == opColor(board[file-1][rank+1].piece.color)){
+						if(board[file-1][rank+1].piece.color== opColor(this->color )){
 							this->legalMoves.push_front(make_tuple(file-1,rank+1));
-							firstmove = false;
+
+							this->firstmove = false;
+						}
+						if( board[file-1][rank].piece.color== opColor(this->color ) && board[file-1][rank].piece.rep == 'P' && board[file-1][rank].piece.firstmove){//en passant
+							this->legalMoves.push_front(make_tuple(file-1,rank+1));
+							board[file-1][rank].piece.enpass =true;
+							enpass =true;
 						}
 					}
 					if(this->inside(file,rank+1)){
-						if(this->color != board[file][rank+1].piece.color){
+						if( board[file][rank+1].piece.rep == 'X'){
 							this->legalMoves.push_front(make_tuple(file,rank+1));
-							firstmove = false;
+
+							this->firstmove = false;
 						}
 					}
 					if(this->inside(file+1,rank+1)){
-						if(this->color == opColor(board[file+1][rank+1].piece.color)){
+						if(board[file+1][rank+1].piece.color && opColor(this->color )){
 							this->legalMoves.push_front(make_tuple(file+1,rank+1));
-							firstmove = false;
+							this->firstmove = false;
+
+						}
+						if(board[file+1][rank].piece.color== opColor(this->color ) && board[file+1][rank].piece.rep == 'P' && board[file+1][rank].piece.firstmove){//en passant
+							this->legalMoves.push_front(make_tuple(file+1,rank+1));
+							board[file+1][rank].piece.enpass =true;
+							enpass =true;
 						}
 					}
+
+				}
+				else if(color == 'b'){
+					this->legalMoves.clear();
+						if(firstmove){
+							if(this->inside(file,rank-2)){
+								if(board[file][rank-2].piece.rep =='X'){
+									this->legalMoves.push_front(make_tuple(file,rank-2));
+
+									this->firstmove = false;
+								}
+							}
+						}
+
+						if(this->inside(file-1,rank-1)){
+							if(board[file-1][rank-1].piece.color== opColor(this->color )){
+								this->legalMoves.push_front(make_tuple(file-1,rank-1));
+
+								this->firstmove = false;
+							}
+							if(board[file-1][rank].piece.color== opColor(this->color )&& board[file-1][rank].piece.rep == 'P' && board[file-1][rank].piece.firstmove ){//en passant
+								this->legalMoves.push_front(make_tuple(file-1,rank-1));
+								board[file-1][rank].piece.enpass =true;
+								enpass =true;
+							}
+						}
+						if(this->inside(file,rank-1)){
+							if(board[file][rank-1].piece.rep == 'X'){
+								this->legalMoves.push_front(make_tuple(file,rank-1));
+
+								this->firstmove = false;
+							}
+						}
+						if(this->inside(file+1,rank-1)){
+							if(board[file+1][rank-1].piece.color== opColor(this->color )){
+								this->legalMoves.push_front(make_tuple(file+1,rank-1));
+								this->firstmove = false;
+
+							}
+							if( board[file+1][rank].piece.color== opColor(this->color )&& board[file+1][rank].piece.rep == 'P' && board[file+1][rank].piece.firstmove ){//en passant
+								this->legalMoves.push_front(make_tuple(file+1,rank-1));
+								board[file+1][rank].piece.enpass =true;
+								enpass =true;
+							}
+						}
+				}
 				}
 Rook::Rook(char c,int x,int y):Piece(c,x,y){rep ='R';	 generic = false;}
 void Rook::updateLegalMoves(Square board[8][8]){
@@ -502,6 +571,7 @@ Board::Board(){// board constructor
 													for(int i=0;i<8;i++){
 														for(int j=0;j<8;j++){
 															board[i][j].setPos(i,j); // inits board, sets square coors
+															board[i][j].piece.updatePos(i,j);
 															if(j%2 == 0){
 																if(i%2 == 0){
 																	board[i][j].color = 'b';
@@ -585,14 +655,34 @@ void Board::takeMove(int xs,int ys,int xd,int yd){
 				bool isLegal = false;
 																						//for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it)
 			for(list<tuple <int,int>>::iterator it=board[xs][ys].piece.legalMoves.begin(); it != board[xs][ys].piece.legalMoves.end(); ++it){
+				cout<< get<0>(*it) << get<1>(*it)<<xd<<  yd<<'\t';
 					if(get<0>(*it) == xd && get<1>(*it) == yd ){
+
 							isLegal = true;
 							break;
 																							}
 																						}
+																				cout<<'\n';
 						if(isLegal){
+							if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){
+								if(xd == xs - 1 && yd ==ys+1){
+									board[xs-1][ys].piece = Piece();
+
+									board[xs-1][ys].piece.updatePos(xs-1,ys);
+									board[xs][ys].piece.enpass = false;
+
+								}
+								else if(xd == xs +1 && yd ==ys+1){
+									board[xs+1][ys].piece = Piece();
+
+									board[xs+1][ys].piece.updatePos(xs-1,ys);
+									board[xs][ys].piece.enpass = false;
+
+								}
+							}
 
 							board[xd][yd].piece =	board[xs][ys].piece ;
+
 							board[xs][ys].piece =  Piece();
 							board[xs][ys].piece.updatePos(xs,ys);
 							board[xd][yd].piece.updatePos(xd,yd);
@@ -612,13 +702,30 @@ void Board::takeMove(int xs,int ys,int xd,int yd){
 									bool isLegal = false;
 																											//for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it)
 								for(list<tuple <int,int>>::iterator it=board[xs][ys].piece.legalMoves.begin(); it != board[xs][ys].piece.legalMoves.end(); ++it){
+									cout<< get<0>(*it) << get<1>(*it)<<xd<<  yd<<'\t';
 										if(get<0>(*it) == xd && get<1>(*it) == yd ){
 												isLegal = true;
 												break;
 																												}
 																											}
+																												cout<<'\n';
 											if(isLegal){
+												if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){
+													if(xd == xs - 1 && yd ==ys+1){
+														board[xs-1][ys].piece = Piece();
 
+														board[xs-1][ys].piece.updatePos(xs-1,ys);
+														board[xs][ys].piece.enpass = false;
+
+													}
+													else if(xd == xs +1 && yd ==ys+1){
+														board[xs+1][ys].piece = Piece();
+
+														board[xs+1][ys].piece.updatePos(xs-1,ys);
+														board[xs][ys].piece.enpass = false;
+
+													}
+												}
 												board[xd][yd].piece =	board[xs][ys].piece ;
 												board[xs][ys].piece =  Piece();
 												board[xs][ys].piece.updatePos(xs,ys);

@@ -9,6 +9,7 @@ class Piece{
 		char color;
 		char rep; // character represntation
 		list <tuple <int,int>> legalMoves;
+		list <tuple <int,int>> attacks;// squares attacked by piece
 		bool generic;
 		bool enpass = false;
 		bool firstmove = true;
@@ -18,6 +19,7 @@ class Piece{
 
 		virtual void updateLegalMoves(Square board[8][8]);
 		// possible moves, empty for parent class, tuples
+		virtual void updateAttacks(Square board[8][8]);
     virtual void updatePos(int f,int r);
 };
 class Square{
@@ -83,7 +85,7 @@ class Pawn:public Piece{
     bool firstmove = true;
 		Pawn(char c,int x,int y);
 		void updateLegalMoves(Square board[8][8]);
-
+		void updateAttacks(Square board[8][8]);
 
 
 };

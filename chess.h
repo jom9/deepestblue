@@ -10,7 +10,8 @@ class Piece{
 		char rep; // character represntation
 		list <tuple <int,int>> legalMoves;
 		bool generic;
-
+		bool enpass = false;
+		bool firstmove = true;
 		Piece();
 		Piece(char c,int f,int r);
 		bool inside(int x, int y);// is the piece inside the board
@@ -23,7 +24,8 @@ class Square{
 public:
 	Piece  piece;
 	int file,rank;
-	int attackedBy = 0; // number of pieces attaking this square
+	int attackedByWhite; // number of pieces attaking this square
+	int attackedByBlack ;
 	char color;
 	Square();
 	Square(int f,int r);
@@ -92,6 +94,10 @@ class Board{
 		char currentPlayer ='w';
 		int turnNum=1;
 		 Square board[8][8];
+		 bool wchecked = false;
+		 bool bchecked = false;
+		 tuple <int,int> wkingPos =  make_tuple(4,0);
+		 tuple <int,int> bkingPos =  make_tuple(4,7);
 		Board();
 
 			void printBoard(); //test function for debugging

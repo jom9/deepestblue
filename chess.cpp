@@ -83,10 +83,13 @@ void Piece::updateLegalMoves(Square board[8][8]){
 	}
 }// possible moves, empty for parent class, tuples
 
-Square::Square(){}
+Square::Square(){attackedByWhite=0; // number of pieces attaking this square
+attackedByBlack=0 ;}
 Square::Square(int f,int r){
 		file = f;
 		rank = r;
+		attackedByWhite=0; // number of pieces attaking this square
+		attackedByBlack =0;
 	}
 void Square::setPos(int f,int r){ // sets position of square
 		file = f;
@@ -99,49 +102,62 @@ tuple <int,int> Square::getPos(){ // returns values of square
 King::King(char c,int x,int y):Piece(c,x,y){rep = 'K'; generic = false;	}
 void King::updateLegalMoves(Square board[8][8]){
 			this->legalMoves.clear();
-			if(this->inside(this->file-1,this->rank+1)){ //checks upper left
-				if(this->color != board[file-1][rank+1].piece.color){
+			if(color == 'w'){
+			if(this->inside(this->file-1,this->rank+1) && this->color != board[file-1][rank+1].piece.color && board[file-1][rank+1].attackedByBlack==0){ //checks upper left
 					this->legalMoves.push_front( make_tuple( file-1,rank+1));
-				}
 			}
-			if(this->inside(this->file,this->rank+1)) { // checks fwd
-				if(this->color != board[file][rank+1].piece.color){
+			if(this->inside(this->file,this->rank+1)&& this->color != board[file][rank+1].piece.color && board[file][rank+1].attackedByBlack==0) { // checks fwd
 					this->legalMoves.push_front( make_tuple( file,rank+1));
-				}
+					cout<<file<<rank+1<<board[file][rank+1].attackedByBlack<<"bleh\n";
 			}
-			if(this->inside(this->file+1,this->rank+1)) { // checks upper righ
-				if(this->color != board[file+1][rank+1].piece.color){
+			if(this->inside(this->file+1,this->rank+1)&&this->color != board[file+1][rank+1].piece.color && board[file+1][rank+1].attackedByBlack==0) { // checks upper right
 					this->legalMoves.push_front( make_tuple( file+1,rank+1));
-				}
 			}
-			if(this->inside(this->file-1,this->rank)) { //checks left
-				if(this->color != board[file-1][rank].piece.color){
+			if(this->inside(this->file-1,this->rank)&&this->color != board[file-1][rank].piece.color && board[file-1][rank].attackedByBlack==0) { //checks left
 					this->legalMoves.push_front( make_tuple( file-1,rank));
-				}
 			}
-			if(this->inside(this->file+1,this->rank)) {// checks right
-				if(this->color != board[file-1][rank].piece.color){
+			if(this->inside(this->file+1,this->rank)&&this->color != board[file+1][rank].piece.color && board[file+1][rank].attackedByBlack==0) {// checks right
 					this->legalMoves.push_front( make_tuple( file+1,rank));
-				}
 			}
-			if(this->inside(this->file-1,this->rank-1)) {//back left
-				if(this->color != board[file-1][rank-1].piece.color){
+			if(this->inside(this->file-1,this->rank-1)&&this->color != board[file-1][rank-1].piece.color && board[file-1][rank-1].attackedByBlack==0) {//back left
 					this->legalMoves.push_front( make_tuple( file-1,rank-1));
-				}
 			}
-			 if(this->inside(this->file,this->rank-1)) { // back
-				if(this->color != board[file][rank-1].piece.color){
+			 if(this->inside(this->file,this->rank-1)&&this->color != board[file][rank-1].piece.color && board[file][rank-1].attackedByBlack==0) { // back
 					this->legalMoves.push_front( make_tuple( file,rank-1));
-				}
 			}
-			if(this->inside(this->file+1,this->rank-1)) { //back right
-				if(this->color != board[file+1][rank-1].piece.color){
+			if(this->inside(this->file+1,this->rank-1)&&this->color != board[file+1][rank-1].piece.color && board[file+1][rank-1].attackedByBlack==0) { //back right
 					this->legalMoves.push_front( make_tuple( file+1,rank-1));
-				}
 			}
-
 
 		}
+		if(color == 'b'){
+		if(this->inside(this->file-1,this->rank+1) && this->color != board[file-1][rank+1].piece.color && board[file-1][rank+1].attackedByWhite==0){ //checks upper left
+				this->legalMoves.push_front( make_tuple( file-1,rank+1));
+		}
+		if(this->inside(this->file,this->rank+1)&& this->color != board[file][rank+1].piece.color&& board[file][rank+1].attackedByWhite==0) { // checks fwd
+				this->legalMoves.push_front( make_tuple( file,rank+1));
+		}
+		if(this->inside(this->file+1,this->rank+1)&&this->color != board[file+1][rank+1].piece.color&& board[file+1][rank+1].attackedByWhite==0) { // checks upper right
+				this->legalMoves.push_front( make_tuple( file+1,rank+1));
+		}
+		if(this->inside(this->file-1,this->rank)&&this->color != board[file-1][rank].piece.color&& board[file-1][rank].attackedByWhite==0) { //checks left
+				this->legalMoves.push_front( make_tuple( file-1,rank));
+		}
+		if(this->inside(this->file+1,this->rank)&&this->color != board[file+1][rank].piece.color&& board[file+1][rank].attackedByWhite==0) {// checks right
+				this->legalMoves.push_front( make_tuple( file+1,rank));
+		}
+		if(this->inside(this->file-1,this->rank-1)&&this->color != board[file-1][rank-1].piece.color&& board[file-1][rank-1].attackedByWhite==0) {//back left
+				this->legalMoves.push_front( make_tuple( file-1,rank-1));
+		}
+		 if(this->inside(this->file,this->rank-1)&&this->color != board[file][rank-1].piece.color&& board[file][rank-1].attackedByWhite==0) { // back
+				this->legalMoves.push_front( make_tuple( file,rank-1));
+		}
+		if(this->inside(this->file+1,this->rank-1)&&this->color != board[file+1][rank-1].piece.color&& board[file+1][rank-1].attackedByWhite==0) { //back right
+				this->legalMoves.push_front( make_tuple( file+1,rank-1));
+		}
+
+	}
+	}
 Knight::Knight(char c,int x,int y):Piece(c,x,y){rep = 'N'; generic = false;	}
 void Knight::updateLegalMoves(Square board[8][8]){
 			this->legalMoves.clear();
@@ -614,7 +630,8 @@ Board::Board(){// board constructor
 													board[3][0].piece =  Queen('w',3,0);// sets major piece
 													board[4][0].piece = King('w',4,0);
 													board[3][7].piece = Queen('b',3,7);
-													board[4][7].piece = King('b',4,7);
+													board[4][7].piece =  King('b',4,7);
+
 													updateBoard();
 													}
 void Board::printBoard(){ //test function for debugging
@@ -635,14 +652,63 @@ void Board::printBoard(){ //test function for debugging
 																}
 
 void Board::updateBoard(){
+	for(int i = 0; i<8; i++){
+		for(int j =0 ; j<8; j++){
+					board[i][j].attackedByBlack = 0; // resets the counter counting how many pieces can attack a square
+					board[i][j].attackedByWhite = 0;
+				}
+		}
+
 		for(int i = 0; i<8; i++){
 			for(int j =0 ; j<8; j++){
 						board[i][j].piece.updateLegalMoves(board);
+						if(board[i][j].piece.color == 'w'){
+						for(list<tuple <int,int>>::iterator it=board[i][j].piece.legalMoves.begin(); it != board[i][j].piece.legalMoves.end(); ++it){
+
+						board[get<0>(*it)][get<1>(*it)].attackedByWhite+=1;
 					}
+					}
+					if(board[i][j].piece.color == 'b'){
+					for(list<tuple <int,int>>::iterator it=board[i][j].piece.legalMoves.begin(); it != board[i][j].piece.legalMoves.end(); ++it){
+
+					board[get<0>(*it)][get<1>(*it)].attackedByBlack+=1;
+				}
+				}
 			}
 		}
 
+			if(board[get<0>(wkingPos)][get<1>(wkingPos)].attackedByBlack){
+				cout<<board[get<0>(wkingPos)][get<1>(wkingPos)].attackedByBlack<<board[get<0>(wkingPos)][get<1>(wkingPos)].piece.rep;
+				wchecked = true;
+				cout << "In check" << '\n';
+			}
+			if(board[get<0>(bkingPos)][get<1>(bkingPos)].attackedByWhite ){
+				cout<<board[get<0>(bkingPos)][get<1>(bkingPos)].attackedByWhite<<board[get<0>(bkingPos)][get<1>(bkingPos)].piece.rep;
+				bchecked = true;
+				cout << "In check" << '\n';
+			}
+
+
+	}
+
 void Board::takeMove(int xs,int ys,int xd,int yd){
+	if(!board[0][0].piece.inside(xs,ys) || !board[0][0].piece.inside(xd,yd)){
+		cout<<"Not inside";
+		return;
+	}
+	if(wchecked){
+		if(get<0>(wkingPos) != xs || get<1>(wkingPos) != ys ){
+			cout << "In check" << '\n';
+			return;
+		}
+	}
+	if(bchecked){
+		if(get<0>(bkingPos) != xs || get<1>(bkingPos) != ys ){
+			cout << "In check" << '\n';
+			return;
+		}
+	}
+
 	if(board[xs][ys].piece.rep == 'X'){
 						cout<< "No piece here\n";
 						return;
@@ -650,29 +716,30 @@ void Board::takeMove(int xs,int ys,int xd,int yd){
 		else if(currentPlayer == 'w'){
 			if(board[xs][ys].piece.color == 'b'){
 				cout<<"Not your piece\n";
+				return;
 																					}
 			else{
 				bool isLegal = false;
-																						//for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it)
+
 			for(list<tuple <int,int>>::iterator it=board[xs][ys].piece.legalMoves.begin(); it != board[xs][ys].piece.legalMoves.end(); ++it){
-				cout<< get<0>(*it) << get<1>(*it)<<xd<<  yd<<'\t';
+
 					if(get<0>(*it) == xd && get<1>(*it) == yd ){
 
 							isLegal = true;
-							break;
+
 																							}
 																						}
 																				cout<<'\n';
 						if(isLegal){
-							if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){
-								if(xd == xs - 1 && yd ==ys+1){
+							if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){ //enpass
+								if(xd == xs - 1 && yd ==ys+1){ //left capture
 									board[xs-1][ys].piece = Piece();
 
 									board[xs-1][ys].piece.updatePos(xs-1,ys);
 									board[xs][ys].piece.enpass = false;
 
 								}
-								else if(xd == xs +1 && yd ==ys+1){
+								else if(xd == xs +1 && yd ==ys+1){// right capture
 									board[xs+1][ys].piece = Piece();
 
 									board[xs+1][ys].piece.updatePos(xs-1,ys);
@@ -680,71 +747,116 @@ void Board::takeMove(int xs,int ys,int xd,int yd){
 
 								}
 							}
+							if( board[xs][ys].piece.rep == 'K'){
+								wkingPos = make_tuple(xd,yd); //update king pos
+								if(wchecked){
+									wchecked=false;
+								}
+							}
 
-							board[xd][yd].piece =	board[xs][ys].piece ;
-
-							board[xs][ys].piece =  Piece();
-							board[xs][ys].piece.updatePos(xs,ys);
-							board[xd][yd].piece.updatePos(xd,yd);
+							board[xd][yd].piece =	board[xs][ys].piece ; //moves piece to new squrare
+							board[xs][ys].piece =  Piece(); // blanks source square
+							board[xs][ys].piece.updatePos(xs,ys);  // update Pos
+							board[xd][yd].piece.updatePos(xd,yd);  // update Pos
 							}
 						else{
+							if(board[xs][ys].piece.rep == 'K' && bchecked){
+								cout<<"Checkmate\n";
+								return;
+								}
 								cout<<"Not Legal\n";
+								return;
 																						}
 																					}
 								currentPlayer = 'b';
 																				}
-						else{
+						else if(currentPlayer == 'b'){
 								if(board[xs][ys].piece.color == 'w'){
 									cout<<"Not your piece\n";
+									return;
 																					}
 								else{
 
 									bool isLegal = false;
-																											//for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it)
+
 								for(list<tuple <int,int>>::iterator it=board[xs][ys].piece.legalMoves.begin(); it != board[xs][ys].piece.legalMoves.end(); ++it){
-									cout<< get<0>(*it) << get<1>(*it)<<xd<<  yd<<'\t';
+
 										if(get<0>(*it) == xd && get<1>(*it) == yd ){
 												isLegal = true;
-												break;
 																												}
 																											}
 																												cout<<'\n';
 											if(isLegal){
-												if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){
-													if(xd == xs - 1 && yd ==ys+1){
+												if(board[xs][ys].piece.rep == 'P' && board[xs][ys].piece.enpass){ //enpassent
+													if(xd == xs - 1 && yd ==ys+1){ //left enpass capture
 														board[xs-1][ys].piece = Piece();
 
-														board[xs-1][ys].piece.updatePos(xs-1,ys);
+														board[xs-1][ys].piece.updatePos(xs-1,ys);// makes sure the piece is removed from board
 														board[xs][ys].piece.enpass = false;
 
 													}
-													else if(xd == xs +1 && yd ==ys+1){
-														board[xs+1][ys].piece = Piece();
+
+													else if(xd == xs +1 && yd ==ys+1){ // right enpass capture
+														board[xs+1][ys].piece = Piece(); // makes sure the piece is removed from board
 
 														board[xs+1][ys].piece.updatePos(xs-1,ys);
 														board[xs][ys].piece.enpass = false;
 
 													}
+
 												}
-												board[xd][yd].piece =	board[xs][ys].piece ;
-												board[xs][ys].piece =  Piece();
-												board[xs][ys].piece.updatePos(xs,ys);
-												board[xd][yd].piece.updatePos(xd,yd);
+												if( board[xs][ys].piece.rep == 'K'){
+													bkingPos = make_tuple(xd,yd);
+													if(bchecked){
+														bchecked=false;
+													}
+												}
+												board[xd][yd].piece =	board[xs][ys].piece ; //moves piece to new squrare
+												board[xs][ys].piece =  Piece(); // blanks source square
+												board[xs][ys].piece.updatePos(xs,ys);  // update Pos
+												board[xd][yd].piece.updatePos(xd,yd);  // update Pos
 												}
 											else{
+													if(board[xs][ys].piece.rep == 'K' && bchecked){
+														cout<<"Checkmate\n";
+														return;
+													}
+
 													cout<<"Not Legal\n";
+													return;
 																											}
 												}
 									currentPlayer = 'w';
 									turnNum++;
 
 																				}
+
 											updateBoard();
 
 	}
 
 
-	int main(){
+	int main(int argc, char *argv[]){
+		if(argc== 2){
+			Board b;
+			b.printBoard();
+			b.takeMove(4,1,4,3);
+			b.printBoard();
+			b.takeMove(4,6,4,4);
+			b.printBoard();
+			b.takeMove(4,0,4,1);
+			b.printBoard();
+			b.takeMove(5,6,5,4);
+			b.printBoard();
+			b.takeMove(4,1,5,2);
+			b.printBoard();
+			b.takeMove(5,4,4,3);
+			b.printBoard();
+			b.takeMove(5,2,5,3);
+			b.printBoard();
+		}
+		else{
+
 
 		Board b;
 		b.printBoard();
@@ -763,6 +875,6 @@ void Board::takeMove(int xs,int ys,int xd,int yd){
 			b.printBoard();
 		}
 
-
+	}
 		return 0;
 	}

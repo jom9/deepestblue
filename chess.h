@@ -13,6 +13,7 @@ class Piece{
 		bool generic;
 		bool enpass = false;
 		bool firstmove = true;
+
 		Piece();
 		Piece(char c,int f,int r);
 		bool inside(int x, int y);// is the piece inside the board
@@ -44,7 +45,6 @@ class King:public Piece{
 
 		King(char c,int x,int y);
 		void updateLegalMoves(Square board[8][8]);
-
 
 
 };
@@ -86,8 +86,6 @@ class Pawn:public Piece{
 		Pawn(char c,int x,int y);
 		void updateLegalMoves(Square board[8][8]);
 		void updateAttacks(Square board[8][8]);
-
-
 };
 
 class Board{
@@ -100,10 +98,21 @@ class Board{
 		 bool bchecked = false;
 		 tuple <int,int> wkingPos =  make_tuple(4,0);
 		 tuple <int,int> bkingPos =  make_tuple(4,7);
-		Board();
+		 list <tuple<int,int>> whitePos; //location of all white pieces
+		 list <tuple<int,int>> blackPos;// location of all black pieces
+		 //list <int,int> whitePiecesPos;
+		 //list <int,int> blackPiecesPos;
 
+			Board();
+
+			bool isLegal(int xs,int ys,int xd,int yd); // checks if move is legal
+			void updateBlack(int xs,int ys,int xd,int yd);// makes a move for black, assumed to be legal
+			void updateWhite(int xs,int ys,int xd,int yd);// makes move for white, assumed to be legal
+			tuple<int,int> captures(int xs,int ys,int xd,int yd);// returns 'w' if white captures black, return 'b' if black captures white, 'X' otherwise
+			list <tuple<int,int,int,int>> legalMoves(); // all legal moves in current states
 			void printBoard(); //test function for debugging
-			void takeMove(int xs,int ys,int xd,int yd);
-      void updateBoard();
+			bool takeMove(int xs,int ys,int xd,int yd);// takes a move, returns true if checkmate is on board.
+			bool checkmate();// checks if checkmate is on board
+      bool updateBoard();
 
 };

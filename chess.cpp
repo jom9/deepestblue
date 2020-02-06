@@ -748,7 +748,7 @@ bool Board::updateBoard(){
 						if(board[i][j].piece.color == 'w'){
 
 						for(list<tuple <int,int>>::iterator it=board[i][j].piece.attacks.begin(); it != board[i][j].piece.attacks.end(); ++it){
-	
+
 						board[get<0>(*it)][get<1>(*it)].attackedByWhite+=1;
 					}
 					}
@@ -766,7 +766,6 @@ bool Board::updateBoard(){
 			if(board[get<0>(bkingPos)][get<1>(bkingPos)].attackedByWhite ){
 				bchecked = true;
 			}
-
 			currentPlayer = opColor(currentPlayer);
 			if(currentPlayer=='w'){
 			turnNum++;}
@@ -976,8 +975,37 @@ bool Board::takeMove(int xs,int ys,int xd,int yd){ //function to make move sourc
 										return	updateBoard();
 
 	}
+list <tuple<int,int,int,int>> Board::legalMoves(){
+	list <tuple<int,int,int,int>> L;
+	if(currentPlayer=='w'){
+		for(list<tuple <int,int>>::iterator it1=whitePos.begin(); it1 != whitePos.end(); ++it1){
+			Piece P = board[get<0>(*it1)][get<1>(*it1)].piece;
+			for(list<tuple <int,int>>::iterator it2=P.legalMoves.begin(); it2 != P.legalMoves.end(); ++it2){
+				L.push_front(	make_tuple(	get<0>(*it1),	get<1>(*it1),	 get<0>(*it2),	get<1>(*it2) ));
+			}
+		}
+	}
+	else{
+		for(list<tuple <int,int>>::iterator it1=blackPos.begin(); it1 != blackPos.end(); ++it1){
+			Piece P = board[get<0>(*it1)][get<1>(*it1)].piece;
+			for(list<tuple <int,int>>::iterator it2=P.legalMoves.begin(); it2 != P.legalMoves.end(); ++it2){
+				L.push_front(	make_tuple(	get<0>(*it1),	get<1>(*it1),	 get<0>(*it2),	get<1>(*it2) ));
+			}
+		}
+	}
 
+	return L;
+}
+bool Board::takeMove(int xs,int ys,int xd,int yd,bool isLegal){// same function as before but it assumes the move is legal
+	if(currentPlayer=='w'){
+		updateWhite(xs,ys,xd,yd);
+	}else{
+		updateBlack(xs,ys,xd,yd);
+	}
+	return	updateBoard();
+}
 
+/*
 	int main(int argc, char *argv[]){
 		if(argc== 2){
 			Board b;
@@ -1020,3 +1048,4 @@ bool Board::takeMove(int xs,int ys,int xd,int yd){ //function to make move sourc
 	}
 		return 0;
 	}
+*/

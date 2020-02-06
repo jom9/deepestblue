@@ -1,3 +1,5 @@
+#ifndef __CHESS_H_INCLUDED__   // if x.h hasn't been included yet...
+#define __CHESS_H_INCLUDED__
 #include <list>
 #include <tuple>
 
@@ -91,7 +93,7 @@ class Pawn:public Piece{
 class Board{
 
 	public:
-		char currentPlayer ='w';
+		char currentPlayer ='b';
 		int turnNum=1;
 		 Square board[8][8];
 		 bool wchecked = false;
@@ -112,7 +114,9 @@ class Board{
 			list <tuple<int,int,int,int>> legalMoves(); // all legal moves in current states
 			void printBoard(); //test function for debugging
 			bool takeMove(int xs,int ys,int xd,int yd);// takes a move, returns true if checkmate is on board.
+			bool takeMove(int xs,int ys,int xd,int yd,bool isLegal);// takes a move, returns true if checkmate is on board, assuming move is legal
 			bool checkmate();// checks if checkmate is on board
       bool updateBoard();
 
 };
+#endif

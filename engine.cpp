@@ -31,7 +31,9 @@ float alphabeta(Node * node, int depth, float alpha, float beta, bool maximizing
   }
   if(maximizingPlayer){
     value = -Inf;
+    cout<<"gen test\n";
     node->genChildren();
+    cout<<"gen test\n";
     //for(list<tuple <int,int>>::iterator it1=blackPos.begin(); it1 != blackPos.end(); ++it1){
     for(list<Node *>::iterator it=node->children.begin(); it!=node->children.end(); ++it){
       Node * child = *it;
@@ -57,11 +59,19 @@ float alphabeta(Node * node, int depth, float alpha, float beta, bool maximizing
   }
   return value;
 }
-Node::Node(Board B){this->B=B;}
+Node::Node(Board b){this->B=b;}
 void Node::genChildren(){
-  for(list<tuple <int,int,int,int>>::iterator it=B.legalMoves().begin(); it != B.legalMoves().end(); ++it){
-    Node *child= new Node(this->B);
-    child->B.takeMove(get<0>(*it),get<1>(*it),get<2>(*it),get<3>(*it),true);
+  list<tuple <int,int,int,int>> moves = B.legalMoves();
+  for(list<tuple <int,int,int,int>>::iterator it=moves.begin(); it != moves.end(); ++it){
+    int xs,ys,xd,yd;
+    xs=get<0>(*it);
+    ys=get<1>(*it);
+    xd=get<2>(*it);
+    yd=get<3>(*it);
+    cout<<"Child:\t"<<xs<<'\t'<<ys<<'\t'<<xd<<'\t'<<yd<<"\n";
+    Node *child = new Node(this->B);
+    //cout<<"Child:"<<xs<<'\t'<<ys<<'\t'<<xd<<'\t'<<yd<<"\n";
+    child->B.takeMove(xs,ys,xd,yd,true);
     children.push_front(child);
   }
 }
@@ -154,7 +164,7 @@ float heuristic(Node *N){
 int main(int argc, char *argv[]){
   int depth = 10;
   if(argc >1){
-    cout<<"test";
+    cout<<"test\n";
 
     Board b;
     b.takeMove(4,1,4,3);
@@ -166,7 +176,9 @@ int main(int argc, char *argv[]){
 
     while(true){
       Node N(b);
+      cout<<"Testq\n";
       alphabeta(&N,depth,Inf,-Inf,true);
+      cout<<"Testq\n";
       Node *bestMove = N.bestChoice();
       b= bestMove->B;
       b.printBoard();

@@ -7,7 +7,7 @@ class Node{
   public:
     Board B;
     float value;
-    Node(Board B);
+    Node(Board b);
     list <Node *> children;
     void genChildren();
     Node * bestChoice(); // gets best choice at a given points

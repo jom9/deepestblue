@@ -32,6 +32,7 @@ bool Piece::inside(int x, int y){// is the piece inside the board
 void Piece::updatePos(int f,int r){
 	file = f;
 	rank = r;
+	firstmove = false;
 }
 void Piece::updateLegalMoves(Square board[8][8]){
 	switch(rep){
@@ -40,6 +41,7 @@ void Piece::updateLegalMoves(Square board[8][8]){
 			Pawn P = Pawn(color,file,rank);
 			P.updateLegalMoves(board);
 			legalMoves = P.legalMoves;
+			firstmove = P.firstmove;
 			break;
 		}
 		case 'N':{
@@ -89,6 +91,7 @@ void Piece::updateAttacks(Square board[8][8]){
 			Pawn P = Pawn(color,file,rank);
 			P.updateAttacks(board);
 			attacks = P.attacks;
+			firstmove = P.firstmove;
 			break;
 		}
 		case 'N':{
@@ -271,15 +274,16 @@ void Pawn::updateAttacks(Square board[8][8]){
 				}
 			}
 void Pawn::updateLegalMoves( Square board[8][8]){
+		this->legalMoves.clear();
 			if(color == 'w'){
 
-				this->legalMoves.clear();
+
 					if(firstmove){
 						if(this->inside(file,rank+2)){
 							if( board[file][rank+2].piece.rep == 'X'){
 								this->legalMoves.push_front(make_tuple(file,rank+2));
 
-								this->firstmove = false;
+								//this->firstmove = false;
 							}
 						}
 					}
@@ -289,7 +293,7 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 						if(board[file-1][rank+1].piece.color== opColor(this->color )){
 							this->legalMoves.push_front(make_tuple(file-1,rank+1));
 
-							this->firstmove = false;
+							//this->firstmove = false;
 						}
 						if( board[file-1][rank].piece.color== opColor(this->color ) && board[file-1][rank].piece.rep == 'P' && board[file-1][rank].piece.firstmove){//en passant
 							this->legalMoves.push_front(make_tuple(file-1,rank+1));
@@ -301,13 +305,13 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 						if( board[file][rank+1].piece.rep == 'X'){
 							this->legalMoves.push_front(make_tuple(file,rank+1));
 
-							this->firstmove = false;
+							//this->firstmove = false;
 						}
 					}
 					if(this->inside(file+1,rank+1)){
 						if(board[file+1][rank+1].piece.color && opColor(this->color )){
 							this->legalMoves.push_front(make_tuple(file+1,rank+1));
-							this->firstmove = false;
+							//this->firstmove = false;
 
 						}
 						if(board[file+1][rank].piece.color== opColor(this->color ) && board[file+1][rank].piece.rep == 'P' && board[file+1][rank].piece.firstmove){//en passant
@@ -325,7 +329,7 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 								if(board[file][rank-2].piece.rep =='X'){
 									this->legalMoves.push_front(make_tuple(file,rank-2));
 
-									this->firstmove = false;
+									//this->firstmove = false;
 								}
 							}
 						}
@@ -334,7 +338,7 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 							if(board[file-1][rank-1].piece.color== opColor(this->color )){
 								this->legalMoves.push_front(make_tuple(file-1,rank-1));
 
-								this->firstmove = false;
+								//this->firstmove = false;
 							}
 							if(board[file-1][rank].piece.color== opColor(this->color )&& board[file-1][rank].piece.rep == 'P' && board[file-1][rank].piece.firstmove ){//en passant
 								this->legalMoves.push_front(make_tuple(file-1,rank-1));
@@ -346,13 +350,13 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 							if(board[file][rank-1].piece.rep == 'X'){
 								this->legalMoves.push_front(make_tuple(file,rank-1));
 
-								this->firstmove = false;
+								//this->firstmove = false;
 							}
 						}
 						if(this->inside(file+1,rank-1)){
 							if(board[file+1][rank-1].piece.color== opColor(this->color )){
 								this->legalMoves.push_front(make_tuple(file+1,rank-1));
-								this->firstmove = false;
+							//this->firstmove = false;
 
 							}
 							if( board[file+1][rank].piece.color== opColor(this->color )&& board[file+1][rank].piece.rep == 'P' && board[file+1][rank].piece.firstmove ){//en passant
@@ -694,8 +698,8 @@ Board::Board(){// board constructor
 													board[6][7].piece = Knight('b',6,7);
 													blackPos.push_front(make_tuple(1,7));
 													blackPos.push_front(make_tuple(6,7));
-													whitePos.push_front(make_tuple(1,7));
-													whitePos.push_front(make_tuple(6,7));
+													whitePos.push_front(make_tuple(1,0));
+													whitePos.push_front(make_tuple(6,0));
 
 													board[2][0].piece =  Bishop('w',2,0);// sets bishop
 													board[5][0].piece = Bishop('w',5,0);
@@ -743,6 +747,7 @@ bool Board::updateBoard(){
 
 		for(int i = 0; i<8; i++){
 			for(int j =0 ; j<8; j++){
+						//board[i][j].piece.legalMoves.clear();
 						board[i][j].piece.updateLegalMoves(board);
 						board[i][j].piece.updateAttacks(board);
 						if(board[i][j].piece.color == 'w'){
@@ -980,8 +985,10 @@ list <tuple<int,int,int,int>> Board::legalMoves(){
 	if(currentPlayer=='w'){
 		for(list<tuple <int,int>>::iterator it1=whitePos.begin(); it1 != whitePos.end(); ++it1){
 			Piece P = board[get<0>(*it1)][get<1>(*it1)].piece;
+			//cout<<P.rep;
 			for(list<tuple <int,int>>::iterator it2=P.legalMoves.begin(); it2 != P.legalMoves.end(); ++it2){
 				L.push_front(	make_tuple(	get<0>(*it1),	get<1>(*it1),	 get<0>(*it2),	get<1>(*it2) ));
+				//cout<<get<0>(*it1)<<"\t"<<	get<1>(*it1)<<"\t"<<	 get<0>(*it2)<<"\t"<<get<1>(*it2)<<"\n";
 			}
 		}
 	}

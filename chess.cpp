@@ -41,7 +41,7 @@ void Piece::updateLegalMoves(Square board[8][8]){
 			Pawn P = Pawn(color,file,rank);
 			P.updateLegalMoves(board);
 			legalMoves = P.legalMoves;
-			firstmove = P.firstmove;
+			//firstmove = P.firstmove;
 			break;
 		}
 		case 'N':{
@@ -90,8 +90,8 @@ void Piece::updateAttacks(Square board[8][8]){
 
 			Pawn P = Pawn(color,file,rank);
 			P.updateAttacks(board);
-			attacks = P.attacks;
-			firstmove = P.firstmove;
+			//attacks = P.attacks;
+			//firstmove = P.move;
 			break;
 		}
 		case 'N':{
@@ -278,7 +278,7 @@ void Pawn::updateLegalMoves( Square board[8][8]){
 			if(color == 'w'){
 
 
-					if(firstmove){
+					if(board[file][rank].piece.firstmove){
 						if(this->inside(file,rank+2)){
 							if( board[file][rank+2].piece.rep == 'X'){
 								this->legalMoves.push_front(make_tuple(file,rank+2));
@@ -913,6 +913,7 @@ void Board::updateWhite(int xs,int ys,int xd,int yd){
 			board[xs][ys].piece =  Piece(); // blanks source square
 			board[xs][ys].piece.updatePos(xs,ys);  // update Pos
 			board[xd][yd].piece.updatePos(xd,yd);  // update Pos
+			board[xd][yd].piece.firstmove = false;
 
 
 }
@@ -966,6 +967,7 @@ void Board::updateBlack(int xs,int ys,int xd,int yd){
 	board[xs][ys].piece =  Piece(); // blanks source square
 	board[xs][ys].piece.updatePos(xs,ys);  // update Pos
 	board[xd][yd].piece.updatePos(xd,yd);  // update Pos
+	board[xd][yd].piece.firstmove = false;
 }
 bool Board::takeMove(int xs,int ys,int xd,int yd){ //function to make move source -> destination
 	if(isLegal(xs,ys,xd,yd)){
@@ -976,6 +978,7 @@ bool Board::takeMove(int xs,int ys,int xd,int yd){ //function to make move sourc
 		}
 
 	}
+	board[xd][yd].piece.firstmove = false;
 
 										return	updateBoard();
 
@@ -1009,50 +1012,7 @@ bool Board::takeMove(int xs,int ys,int xd,int yd,bool isLegal){// same function 
 	}else{
 		updateBlack(xs,ys,xd,yd);
 	}
+	board[xd][yd].piece.firstmove = false;
+
 	return	updateBoard();
 }
-
-/*
-	int main(int argc, char *argv[]){
-		if(argc== 2){
-			Board b;
-			b.printBoard();
-			b.takeMove(4,1,4,3);
-			b.printBoard();
-			b.takeMove(4,6,4,4);
-			b.printBoard();
-			b.takeMove(4,0,4,1);
-			b.printBoard();
-			b.takeMove(5,6,5,4);
-			b.printBoard();
-			b.takeMove(4,1,5,2);
-			b.printBoard();
-			b.takeMove(5,4,4,3);
-			b.printBoard();
-			b.takeMove(5,2,5,3);
-			b.printBoard();
-		}
-		else{
-
-
-		Board b;
-		b.printBoard();
-		int xs,ys,xd,yd;
-		while(true){
-			cout<<"Enter Move\n";
-			cin>>xs>>ys>>xd>>yd;
-			if(xs == -1 && ys == -1 && xd == -1 && yd == -1){
-
-				cout<<"Done!";
-				break;
-			}
-			else{
-				b.takeMove(xs,ys,xd,yd);
-			}
-			b.printBoard();
-		}
-
-	}
-		return 0;
-	}
-*/

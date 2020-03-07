@@ -4,34 +4,14 @@
 int Inf = 100000;
 
 using namespace std;
-/*function alphabeta(node, depth, α, β, maximizingPlayer) is
-    if depth = 0 or node is a terminal node then
-        return the heuristic value of node
-    if maximizingPlayer then
-        value := −∞
-        for each child of node do
-            value := max(value, alphabeta(child, depth − 1, α, β, FALSE))
-            α := max(α, value)
-            if α ≥ β then
-                break (* β cut-off *)
-        return value
-    else
-        value := +∞
-        for each child of node do
-            value := min(value, alphabeta(child, depth − 1, α, β, TRUE))
-            β := min(β, value)
-            if α ≥ β then
-                break (* α cut-off *)
-        return value
-    */
+
 float alphabeta(Node * node, int depth, float alpha, float beta, bool maximizingPlayer){
   float value;
   node->genChildren();
-  cout<<"Is empty?"<<node->children.empty()<<'\n';
+  Node *best;
   cout<<"depth"<<depth<<"\n";
   if(depth==0 || node->children.empty()){
     value = heuristic(node);
-    node->value = value;
     return value;
   }
   if(maximizingPlayer){
@@ -41,27 +21,50 @@ float alphabeta(Node * node, int depth, float alpha, float beta, bool maximizing
       cout<<"Depth"<<depth;
       value = max(value, alphabeta(*child,  depth-1,  alpha,beta  ,false));
       alpha = max(alpha,value);
+      best = *child;
       if(alpha>=beta){
+
         break;
       }
     }
+    node->value = value;
+    return value;
   }
   else{
     value = Inf;
+
     for(list<Node *>::iterator child=node->children.begin(); child!=node->children.end(); ++child){
 
       value = min(value, alphabeta(*child,  depth-1,  alpha,beta,  true));
       beta = min(alpha,value);
+      best = *child;
       if(alpha>=beta){
+
         break;
       }
     }
+    node->value = value;
+    return value;
 
   }
-  node->value = value;
-  return value;
+
+
 }
 Node::Node(Board b){this->B=b;}
+Node::Node(Board b,Node * P){this->B = b;this->parent=P;}
+Node::~Node(){
+    if(children.empty()){
+      delete this;
+    }
+    else{
+      for(list<Node *>::iterator child=this->children.begin(); child!=this->children.end(); ++child){
+        (*child)->~Node();
+      }
+      children.clear();
+    }
+
+
+}
 void Node::genChildren(){
   list<tuple <int,int,int,int>> moves = B.legalMoves();
   //cout<<"Parent:\n";
@@ -71,24 +74,13 @@ void Node::genChildren(){
     ys=get<1>(*it);
     xd=get<2>(*it);
     yd=get<3>(*it);
-    //cout<<"\tChild:\t"<<xs<<'\t'<<ys<<'\t'<<xd<<'\t'<<yd<<"\n";
-    Node *child = new Node(this->B);
-    //cout<<"Child:"<<xs<<'\t'<<ys<<'\t'<<xd<<'\t'<<yd<<"\n";
+    cout<<"Generating child: "<<xs<<','<<ys<<','<<xd<<','<<yd;
+    Node *child = new Node(this->B,this);
     child->B.takeMove(xs,ys,xd,yd,true);
     children.push_front(child);
   }
 }
-Node* Node::bestChoice(){
-  float max = -Inf;
-  Node *N;
-  for(list<Node *>::iterator it = children.begin(); it!= children.end(); ++it){
-    if( max<(*it)->value ){
-      max = (*it)->value;
-      N = *it;
-    }
-  }
-  return N;
-}
+
 float max(float x,float y){
   if(x>y){
     return x;
@@ -166,7 +158,7 @@ float heuristic(Node *N){
 }
 
 int main(int argc, char **argv){
-  int depth =5;
+  int depth =3;
   if(argc >1){
     //depth = (int) argv[1][0];
 

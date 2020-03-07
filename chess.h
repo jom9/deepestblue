@@ -24,15 +24,17 @@ class Piece{
 		// possible moves, empty for parent class, tuples
 		virtual void updateAttacks(Square board[8][8]);
     virtual void updatePos(int f,int r);
+
 };
 class Square{
 public:
-	Piece  piece;
+	Piece  *piece;
 	int file,rank;
 	int attackedByWhite; // number of pieces attaking this square
 	int attackedByBlack ;
 	char color;
 	Square();
+	~Square();
 	Square(int f,int r);
 	void setPos(int f,int r); // sets position of square
 
@@ -106,7 +108,7 @@ class Board{
 		 //list <int,int> blackPiecesPos;
 
 			Board();
-
+			~Board();
 			bool isLegal(int xs,int ys,int xd,int yd); // checks if move is legal
 			void updateBlack(int xs,int ys,int xd,int yd);// makes a move for black, assumed to be legal
 			void updateWhite(int xs,int ys,int xd,int yd);// makes move for white, assumed to be legal

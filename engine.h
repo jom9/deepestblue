@@ -7,10 +7,13 @@ class Node{
   public:
     Board B;
     float value;
+    Node *parent = NULL;
     Node(Board b);
+    Node(Board b,Node *p);
+    ~Node();
     list <Node *> children;
     void genChildren();
-    Node * bestChoice(); // gets best choice at a given points
+    //Node * bestChoice(); // gets best choice at a given points
 };
 int pieceEval(char rep);
 float heuristic(Node *N);

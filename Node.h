@@ -1,7 +1,0 @@
-
-
-class Node{
-  private:
-  
-  public:
-}

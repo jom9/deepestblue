@@ -13,11 +13,14 @@ class BitBoard{
     void SetAll(bool val);
     void SetOn(int x,int y);
     void SetOff(int x,int y);
+    void SetOffRank(int r);
     bool IsSet(int x,int y);
     bool CombineXOR(BitBoard B );
+    
 
     static bool Inside(int x,int y);
     static BitBoard Or(BitBoard B1, BitBoard B2);
     static BitBoard And(BitBoard B1, BitBoard B2);
     char Rep(int x, int y);
+
 };

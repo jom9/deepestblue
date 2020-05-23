@@ -16,7 +16,7 @@ class Chess{
     BitBoard BlackBishops;
 
     BitBoard WhiteRooks;
-    BitBoard BlackRooks;
+
 
     BitBoard WhiteQueen;
     BitBoard BlackQueen;
@@ -30,8 +30,11 @@ class Chess{
     BitBoard WhiteAttacks;
     BitBoard BlackAttacks;
 
-    BitBoard UnMovedPawns;
+    BitBoard UnMovedBlackPawns;
+    BitBoard UnMovedWhitePawns;
   public:
+    BitBoard BlackRooks;
+    bool promote;
     char player;
     void Update();
     void StartGame();
@@ -50,7 +53,7 @@ class Chess{
     BitBoard WhiteQueenMoves(int x,int y);
     BitBoard BlackKingMoves(int x,int y);
     BitBoard WhiteKingMoves(int x,int y);
-
+    void Promote(int xs,int ys, int xd, int yd);
     void RemovePiece(int x, int y, char c);
     void Move(int xs,int ys,int xd, int yd); //make a move
 

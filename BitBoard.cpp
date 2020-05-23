@@ -17,6 +17,7 @@ void BitBoard::SetOn(int x, int y){
   }
 }
 void BitBoard::SetOff(int x,int y){
+  //std::cout<<x<<y<<'\n';
   if(this->IsSet(x,y)){
       this->board[(x+8*y)]= 0 ;
   }
@@ -50,4 +51,21 @@ BitBoard BitBoard::Or(BitBoard B1, BitBoard B2){
 }
 bool BitBoard::Inside(int x,int y){
   return (x+8*y)<64 && (x+8*y)>=0;
+}
+void BitBoard::PrintBoard(){
+  std::cout << '\n'<<'\n';
+  for(int j= 0; j<8;j++){
+    std::cout<<'\t'<<(j+1)<<"\t";
+    for(int i=0; i<8; i++){
+      if(this->IsSet(i,j)){
+        std::cout<<'\t'<<'X'<<'\t';
+      }else{
+        std::cout<<'\t'<<'0'<<'\t';
+      }
+
+
+    }
+    std::cout << '\n'<<'\n';
+  }
+  std::cout << '\n'<<'\n';
 }

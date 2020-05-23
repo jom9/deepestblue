@@ -16,7 +16,8 @@ class BitBoard{
     void SetOffRank(int r);
     bool IsSet(int x,int y);
     bool CombineXOR(BitBoard B );
-    
+
+    void PrintBoard();
 
     static bool Inside(int x,int y);
     static BitBoard Or(BitBoard B1, BitBoard B2);

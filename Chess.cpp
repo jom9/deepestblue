@@ -81,7 +81,7 @@ BitBoard Chess::BlackPawnMoves(int x,int y){
     if(this->WhitePieces.IsSet(x-1,y+1) ){
       B.SetOn(x-1,y+1);
     }
-    if(this->UnMovedPawns.IsSet(x-1,y+1)){
+    else if(this->UnMovedPawns.IsSet(x-1,y+1)){
       B.SetOn(x-1,y+1);
     }
   }
@@ -89,7 +89,7 @@ BitBoard Chess::BlackPawnMoves(int x,int y){
     if(this->WhitePieces.IsSet(x+1,y+1) ){
       B.SetOn(x+1,y+1);
     }
-    if(this->UnMovedPawns.IsSet(x+1,y+1)){
+    else if(this->UnMovedPawns.IsSet(x+1,y+1)){
       B.SetOn(x+1,y+1);
     }
   }
@@ -109,7 +109,7 @@ BitBoard Chess::WhitePawnMoves(int x,int y){
     if(this->WhitePieces.IsSet(x-1,y-1) ){
       B.SetOn(x-1,y-1);
     }
-    if(this->UnMovedPawns.IsSet(x-1,y-1)){
+    else if(this->UnMovedPawns.IsSet(x-1,y-1)){
       B.SetOn(x-1,y-1);
     }
   }
@@ -117,7 +117,7 @@ BitBoard Chess::WhitePawnMoves(int x,int y){
     if(this->WhitePieces.IsSet(x+1,y-1) ){
       B.SetOn(x+1,y-1);
     }
-    if(this->UnMovedPawns.IsSet(x+1,y-1)){
+    else if(this->UnMovedPawns.IsSet(x+1,y-1)){
       B.SetOn(x+1,y-1);
     }
   }
@@ -155,7 +155,7 @@ BitBoard Chess::WhiteKnightMoves(int x, int y){
 BitBoard Chess::BlackBishopMoves(int x, int y){
   BitBoard B;
   int i;
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x+i,y+i) && !this->BlackPieces.IsSet(x+i,y+i) ){
     B.SetOn(x+i,y+i);
     if( this->WhitePieces.IsSet(x+i,y+i) ){
@@ -163,7 +163,7 @@ BitBoard Chess::BlackBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y-i) && !this->BlackPieces.IsSet(x-i,y-i) ){
     B.SetOn(x-i,y-i);
     if( this->WhitePieces.IsSet(x-i,y-i) ){
@@ -171,7 +171,7 @@ BitBoard Chess::BlackBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x+i,y-i) && !this->BlackPieces.IsSet(x+i,y-i) ){
     B.SetOn(x+i,y-i);
     if( this->WhitePieces.IsSet(x+i,y-i) ){
@@ -179,7 +179,7 @@ BitBoard Chess::BlackBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y+i) && !this->BlackPieces.IsSet(x-i,y+i) ){
     B.SetOn(x-i,y+i);
     if( this->WhitePieces.IsSet(x-i,y+i) ){
@@ -193,7 +193,7 @@ BitBoard Chess::BlackBishopMoves(int x, int y){
 BitBoard Chess::WhiteBishopMoves(int x, int y){
   BitBoard B;
   int i;
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x+i,y+i) && !this->WhitePieces.IsSet(x+i,y+i) ){
     B.SetOn(x+i,y+i);
     if( this->BlackPieces.IsSet(x+i,y+i) ){
@@ -201,7 +201,7 @@ BitBoard Chess::WhiteBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y-i) && !this->WhitePieces.IsSet(x-i,y-i) ){
     B.SetOn(x-i,y-i);
     if( this->BlackPieces.IsSet(x-i,y-i) ){
@@ -209,7 +209,7 @@ BitBoard Chess::WhiteBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x+i,y-i) && !this->WhitePieces.IsSet(x+i,y-i) ){
     B.SetOn(x+i,y-i);
     if( this->BlackPieces.IsSet(x+i,y-i) ){
@@ -217,7 +217,7 @@ BitBoard Chess::WhiteBishopMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y+i) && !this->WhitePieces.IsSet(x-i,y+i) ){
     B.SetOn(x-i,y+i);
     if( this->BlackPieces.IsSet(x-i,y+i) ){
@@ -230,33 +230,41 @@ BitBoard Chess::WhiteBishopMoves(int x, int y){
 BitBoard Chess::BlackRookMoves(int x, int y){
   BitBoard B;
   int i;
-  i = 0;
+  i = 1;
+  //std::cout<<"Black pieces\n";
+  //this->BlackPieces.PrintBoard();
+//  std::cout<<"White pieces\n";
+  //this->WhitePieces.PrintBoard();
   while(BitBoard::Inside(x+i,y) && !this->BlackPieces.IsSet(x+i,y) ){
     B.SetOn(x+i,y);
+    //std::cout<<x+i<<y<<'\n';
     if( this->WhitePieces.IsSet(x+i,y) ){
       break;
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y) && !this->BlackPieces.IsSet(x-i,y) ){
     B.SetOn(x-i,y);
+    //std::cout<<x-i<<y<<'\n';
     if( this->WhitePieces.IsSet(x-i,y) ){
       break;
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x,y-i) && !this->BlackPieces.IsSet(x,y-i) ){
     B.SetOn(x,y-i);
+    //std::cout<<x<<y-1<<'\n';
     if( this->WhitePieces.IsSet(x,y-i) ){
       break;
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x,y+i) && !this->BlackPieces.IsSet(x,y+i) ){
     B.SetOn(x,y+i);
+    std::cout<<x<<y+1<<'\n';
     if( this->WhitePieces.IsSet(x,y+i) ){
       break;
     }
@@ -267,7 +275,7 @@ BitBoard Chess::BlackRookMoves(int x, int y){
 BitBoard Chess::WhiteRookMoves(int x, int y){
   BitBoard B;
   int i;
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x+i,y) && !this->WhitePieces.IsSet(x+i,y) ){
     B.SetOn(x+i,y);
     if( this->BlackPieces.IsSet(x+i,y) ){
@@ -275,7 +283,7 @@ BitBoard Chess::WhiteRookMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x-i,y) && !this->WhitePieces.IsSet(x-i,y) ){
     B.SetOn(x-i,y);
     if( this->BlackPieces.IsSet(x-i,y) ){
@@ -283,7 +291,7 @@ BitBoard Chess::WhiteRookMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x,y-i) && !this->WhitePieces.IsSet(x,y-i) ){
     B.SetOn(x,y-i);
     if( this->BlackPieces.IsSet(x,y-i) ){
@@ -291,7 +299,7 @@ BitBoard Chess::WhiteRookMoves(int x, int y){
     }
     i++;
   }
-  i = 0;
+  i = 1;
   while(BitBoard::Inside(x,y+i) && !this->WhitePieces.IsSet(x,y+i) ){
     B.SetOn(x,y+i);
     if( this->BlackPieces.IsSet(x,y+i) ){
@@ -344,6 +352,7 @@ void Chess::Update(){
   this->BlackPieces = BitBoard::Or(BlackBishops, this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackKnights, this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackRooks,this->BlackPieces);
+  this->BlackPieces = BitBoard::Or(BlackKing,this->BlackPieces);
 
   this->WhitePieces.SetAll(false);
   this->WhitePieces = BitBoard::Or(WhitePawns,this->WhitePieces);
@@ -351,6 +360,8 @@ void Chess::Update(){
   this->WhitePieces = BitBoard::Or(WhiteBishops, this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteKnights, this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteRooks,this->WhitePieces);
+  this->WhitePieces = BitBoard::Or(WhiteKing,this->WhitePieces);
+
 
 }
 
@@ -392,9 +403,16 @@ void Chess::Move(int xs,int ys, int xd, int yd){
         UnMovedPawns.SetOff(xs,ys);
         UnMovedPawns.SetOn(xs,ys-1);
       }
+      if(this->UnMovedPawns.IsSet(xd,yd)){
+        RemovePiece(xd,3,this->player);
+      }
       this->WhitePawns.SetOff(xs,ys);
-      RemovePiece(xd,yd,player);
+      RemovePiece(xd,yd,this->player);
       this->WhitePawns.SetOn(xd,yd);
+      if(yd == 0){
+        this->WhitePawns.SetOff(xd,yd);
+        this->WhiteQueen.SetOn(xd,yd);
+      }
     }
     else if(this->WhiteBishops.IsSet(xs,ys) && this->WhiteBishopMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteBishops.SetOff(xs,ys);
@@ -433,9 +451,17 @@ void Chess::Move(int xs,int ys, int xd, int yd){
         UnMovedPawns.SetOff(xs,ys);
         UnMovedPawns.SetOn(xs,ys+ 1);
       }
+
       this->BlackPawns.SetOff(xs,ys);
+      if(this->UnMovedPawns.IsSet(xd,yd)){
+        RemovePiece(xd,5,player);
+      }
       RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
+      if(yd == 7){
+        this->BlackPawns.SetOff(xd,yd);
+        this->BlackQueen.SetOn(xd,yd);
+      }
     }
     else if(this->BlackBishops.IsSet(xs,ys) && this->BlackBishopMoves(xs,ys).IsSet(xd,yd)){
 
@@ -449,6 +475,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->BlackKnights.SetOn(xd,yd);
     }
     else if(this->BlackRooks.IsSet(xs,ys)&& this->BlackRookMoves(xs,ys).IsSet(xd,yd)){
+
       this->BlackRooks.SetOff(xs,ys);
       RemovePiece(xd,yd,player);
       this->BlackRooks.SetOn(xd,yd);
@@ -458,6 +485,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     this->player= 'w';
     UnMovedPawns.SetOffRank(6);
+
   }
   Update();
 }
@@ -518,6 +546,8 @@ void Chess::PrintBoard(){
     std::cout << '\n'<<'\n';
   }
   std::cout << '\n';
+  //this->BlackPieces.PrintBoard();
+  //this->WhitePieces.PrintBoard();
 }
 int main(){
   Chess C;
@@ -527,6 +557,7 @@ int main(){
 
   C.Move(0,6,0,4);
   C.PrintBoard();
+
 
   C.Move(0,1,0,3);
   C.PrintBoard();
@@ -545,4 +576,17 @@ int main(){
 
   C.Move(1,3,2,2);
   C.PrintBoard();
+
+  C.Move(3,1,3,3);
+  C.PrintBoard();
+
+  C.Move(2,2,2,1);
+  C.PrintBoard();
+  
+  C.Move(0,0,0,1);
+  C.PrintBoard();
+
+
+
+
 }

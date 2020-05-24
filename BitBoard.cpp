@@ -24,6 +24,11 @@ void BitBoard::SetOff(int x,int y){
     std::cout << "Nothing's Here" << '\n';
   }
 }
+void BitBoard::SetOffRank(int r){
+
+  std::bitset<64> bar (8*r+28);
+  this->board = (this->board |bar) ^ bar;
+}
 bool BitBoard::IsSet(int x,int y){
   return this->board.test((x+8*y));
 }

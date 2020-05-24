@@ -596,52 +596,6 @@ void Chess::PrintBoard(){
     std::cout << '\n'<<'\n';
   }
   std::cout << '\n';
-  //this->BlackPieces.PrintBoard();
-  //this->WhitePieces.PrintBoard();
-}
-int main(){
-  Chess C;
-  C.StartGame();
-  C.PrintBoard();
-  int xs,ys,xd,yd;
-
-  C.Move(0,6,0,4);
-  C.PrintBoard();
-
-
-  C.Move(0,1,0,3);
-  C.PrintBoard();
-
-  C.Move(1,6,1,4);
-  C.PrintBoard();
-
-  C.Move(1,1,1,2);
-  C.PrintBoard();
-
-  C.Move(1,4,1,3);
-  C.PrintBoard();
-
-  C.Move(2,1,2,3);
-  C.PrintBoard();
-
-  C.Move(1,3,2,2);
-  C.PrintBoard();
-
-  C.Move(3,1,3,3);
-  C.PrintBoard();
-
-  C.Move(2,2,2,1);
-  C.PrintBoard();
-
-  C.Move(0,0,0,1);
-  C.PrintBoard();
-
-  C.Move(2,1,1,0);
-  C.PrintBoard();
-
-  C.Move(1,0,-1,-1);
-  C.PrintBoard();
-
-
 
 }
+

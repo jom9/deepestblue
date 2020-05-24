@@ -1,0 +1,14 @@
+// accesses c++ file
+
+
+
+<?php
+
+
+
+
+
+
+
+
+>

@@ -543,13 +543,13 @@ void Chess::PrintBoard(){
 
   //std::cout<<"\033[0;31m" <<board[i][j].piece.rep<<"\033[0m" <<"\t";
   //std::cout<<"\033[0;34m"<<board[i][j].piece.rep<<"\033[0m"<<"\t"
-  std::cout<<"\t\t ";
+
   for(int j= 0; j<8;j++){
-    std::cout<<'\t'<<(char)(j+65)<<'\t';
+    //std::cout<<'\t'<<(char)(j+65)<<'\t';
   }
   std::cout<<'\n';
   for(int j= 0; j<8;j++){
-    std::cout<<'\t'<<(j+1)<<"\t";
+    //std::cout<<'\t'<<(j+1)<<"\t";
     for(int i=0; i<8; i++){
 
       if ( BlackPawns.IsSet(i,j)){
@@ -598,4 +598,3 @@ void Chess::PrintBoard(){
   std::cout << '\n';
 
 }
-

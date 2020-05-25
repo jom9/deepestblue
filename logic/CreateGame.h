@@ -1,10 +1,11 @@
-#include "BitBoard.h"
+
 #include<stdio.h>
-#include "Chess.h"
+
+
 
 
 class CreateGame{
-
-  Chess GetGameFromCache();
+public:
+  void GetGameFromCache(int xs,int ys, int xd,int yd);
   void EmptyCache();
-}
+};

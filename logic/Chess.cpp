@@ -547,54 +547,67 @@ void Chess::PrintBoard(){
   for(int j= 0; j<8;j++){
     //std::cout<<'\t'<<(char)(j+65)<<'\t';
   }
-  std::cout<<'\n';
+  //std::cout<<'\n';
   for(int j= 0; j<8;j++){
     //std::cout<<'\t'<<(j+1)<<"\t";
     for(int i=0; i<8; i++){
 
       if ( BlackPawns.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"P"<<"\033[0m"<<"\t";
+        std::cout<<'P';
+        //std::cout<<"\t\033[0;34m"<<"P"<<"\033[0m"<<"\t";
       }
       else if(WhitePawns.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"P"<<"\033[0m" <<"\t";
+        std::cout<<'p';
+        //std::cout<<"\t\033[0;31m" <<"P"<<"\033[0m" <<"\t";
       }
       else if(BlackKing.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"K"<<"\033[0m"<<"\t";
+        std::cout<<'K';
+      //std::cout<<"\t\033[0;34m"<<"K"<<"\033[0m"<<"\t";
       }
       else if(WhiteKing.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"K"<<"\033[0m" <<"\t";
+        std::cout<<'k';
+        //std::cout<<"\t\033[0;31m" <<"K"<<"\033[0m" <<"\t";
       }
       else if(BlackQueen.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"Q"<<"\033[0m"<<"\t";
+        std::cout<<'Q';
+        //std::cout<<"\t\033[0;34m"<<"Q"<<"\033[0m"<<"\t";
       }
       else if(WhiteQueen.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"Q"<<"\033[0m" <<"\t";
+        std::cout<<'q';
+        //std::cout<<"\t\033[0;31m" <<"Q"<<"\033[0m" <<"\t";
       }
       else if(BlackRooks.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"R"<<"\033[0m"<<"\t";
+        std::cout<<'R';
+      //  std::cout<<"\t\033[0;34m"<<"R"<<"\033[0m"<<"\t";
       }
       else if(WhiteRooks.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"R"<<"\033[0m" <<"\t";
+        std::cout<<'r';
+        //std::cout<<"\t\033[0;31m" <<"R"<<"\033[0m" <<"\t";
       }
       else if(BlackBishops.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"B"<<"\033[0m"<<"\t";
+        std::cout<<'B';
+        //std::cout<<"\t\033[0;34m"<<"B"<<"\033[0m"<<"\t";
       }
       else if(WhiteBishops.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"B"<<"\033[0m" <<"\t";
+        std::cout<<'b';
+      //  std::cout<<"\t\033[0;31m" <<"B"<<"\033[0m" <<"\t";
       }
       else if(BlackKnights.IsSet(i,j)){
-        std::cout<<"\t\033[0;34m"<<"N"<<"\033[0m"<<"\t";
+        std::cout<<'N';
+      //  std::cout<<"\t\033[0;34m"<<"N"<<"\033[0m"<<"\t";
       }
       else if(WhiteKnights.IsSet(i,j)){
-        std::cout<<"\t\033[0;31m" <<"N"<<"\033[0m" <<"\t";
+        std::cout<<'n';
+      //  std::cout<<"\t\033[0;31m" <<"N"<<"\033[0m" <<"\t";
       }
       else{
         std::cout<<"\tX\t";
+      //  std::cout<<"\tX\t";
       }
 
     }
-    std::cout << '\n'<<'\n';
+    //std::cout << '\n'<<'\n';
   }
-  std::cout << '\n';
+  //std::cout << '\n';
 
 }

@@ -1,6 +1,6 @@
 .chessboard {
-    width: 640px;
-    height: 640px;
+    width: 800px;
+    height: 800px;
     margin: 20px;
     border: 25px solid #333;
     align-items: center;

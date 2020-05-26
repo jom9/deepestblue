@@ -1,19 +1,61 @@
 
 import React from 'react';
 import './ChessBoard.css';
-var xs = -1;
-var ys = -1;
+
+function StartPos(x,y){
+  if(y == '1'){
+    return "\u265F" ;// black pawns
+  }else if (y==6) {
+
+    return "\u2659";// white pawns
+  }
+  else if(y==0){
+    if(x==0 || x==7){
+      return "\u265C";/// black rooks
+    }else if( x== 1 || x == 6){
+      return "\u265E";
+    }
+    else if( x== 2 || x == 5 ){
+      return "\u265D";
+    }
+    else if( x== 3){
+      return "\u265B";
+    }
+    else if ( x == 4){
+      return "\u265A";
+    }
+  }
+  else if(y == 7){
+    if(x==0 || x==7){
+      return "\u2656";
+    }else if( x== 1 || x == 6){
+      return "\u2658";
+    }
+    else if( x== 2 || x == 5 ){
+      return "\u2657";
+    }
+    else if( x== 3){
+      return "\u2655";
+    }
+    else if ( x == 4){
+      return "\u2654";
+    }
+  }
+  else{
+    return "";
+  }
+}
 
 class Square extends React.Component{
   constructor(props){
     super(props);
     this.state ={
       x : this.props.x,
-      y : this.props.y
+      y : this.props.y,
 
 
     };
-
+    this.state.piece = StartPos(this.state.x,this.state.y);
     if(this.state.x%2==this.state.y%2){
       this.state.color = "black";
     }
@@ -24,7 +66,7 @@ class Square extends React.Component{
 
   render(){
     return(
-      <button class = {this.state.color} onClick={this.props.func.bind(this,this.state.x,this.state.y)}  ></button>
+      <button class = {this.state.color} onClick={this.props.func.bind(this,this.state.x,this.state.y)}  >{this.state.piece}</button>
     );
   }
 
@@ -52,7 +94,7 @@ class Board extends React.Component{
     var L = new Array([]);
     var i;
 
-    for(i=1;i<8;i++){
+    for(i=0;i<8;i++){
       L[i] = [<tr>{this.renderRow(i)}</tr>] ;
 
     }

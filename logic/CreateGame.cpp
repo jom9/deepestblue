@@ -51,7 +51,7 @@ int main(int argc,char ** argv){
   ys = argv[3][0] -48;
   xd = argv[4][0] -48;
   yd = argv[5][0] -48;
-  cout<<xs<<ys<<"\n";
+  //cout<<xs<<ys<<"\n";
   if(strcmp(argv[1], "new") == 0){ // clear cache
     C.EmptyCache();
     C.GetGameFromCache(xs,ys,xd,yd);

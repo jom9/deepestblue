@@ -601,7 +601,7 @@ void Chess::PrintBoard(){
       //  std::cout<<"\t\033[0;31m" <<"N"<<"\033[0m" <<"\t";
       }
       else{
-        std::cout<<"\tX\t";
+        std::cout<<"X";
       //  std::cout<<"\tX\t";
       }
 

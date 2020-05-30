@@ -4,6 +4,8 @@
 
 class Chess{
   private:
+
+  public:
     BitBoard board;
 
     BitBoard WhitePawns;
@@ -16,7 +18,7 @@ class Chess{
     BitBoard BlackBishops;
 
     BitBoard WhiteRooks;
-
+    BitBoard BlackRooks;
 
     BitBoard WhiteQueen;
     BitBoard BlackQueen;
@@ -32,16 +34,24 @@ class Chess{
 
     BitBoard UnMovedBlackPawns;
     BitBoard UnMovedWhitePawns;
-  public:
-    BitBoard BlackRooks;
+
+    //std::List<BitBoard> AllWhiteMoves;
+    //std::List<BitBoard> AllBlackMoves;
+
     bool promote;
     char player;
-    void Update();
-    void StartGame();
-    void PrintBoard();// prints current board, for debugging
+    void Update();// must update all bit boards!
+    void StartGame();// same dependencieces as Update();
+    Chess * Copy();
     bool IsLegal(int x,int y);// return true if a the move is legal
+    void Promote(int xs,int ys, int xd, int yd);
+    void RemovePiece(int x, int y, char c);
+    void Move(int xs,int ys,int xd, int yd); //make a move, dependent on RemovePiece, Promote
 
-    BitBoard BlackPawnMoves(int x,int y);
+
+    void PrintBoard();// prints current board, for php calls
+    void PrintBoard(bool debug);// prints board, for debuging
+    BitBoard BlackPawnMoves(int x,int y)
     BitBoard WhitePawnMoves(int x,int y);
     BitBoard BlackKnightMoves(int x, int y);
     BitBoard WhiteKnightMoves(int x, int y);
@@ -53,9 +63,9 @@ class Chess{
     BitBoard WhiteQueenMoves(int x,int y);
     BitBoard BlackKingMoves(int x,int y);
     BitBoard WhiteKingMoves(int x,int y);
-    void Promote(int xs,int ys, int xd, int yd);
-    void RemovePiece(int x, int y, char c);
-    void Move(int xs,int ys,int xd, int yd); //make a move
+
+
+
 
 
 };

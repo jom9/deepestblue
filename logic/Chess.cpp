@@ -22,83 +22,83 @@
 void Chess::StartGame(){
   player = 'w';
   for(int i=0; i<8; i++){
-    this->BlackPawns.SetOn(i,1);
-    this->WhitePawns.SetOn(i,6);
+    this->BlackPawns.SetOn(i,1);// Sets black pawns
+    this->WhitePawns.SetOn(i,6);// Sets white pawns
   }
 
-  this->UnMovedWhitePawns = this->WhitePawns;
-  this->UnMovedBlackPawns = this->BlackPawns;
+  this->UnMovedWhitePawns = this->WhitePawns;// keeps track of the unmoved pawns for enpassent
+  this->UnMovedBlackPawns = this->BlackPawns;//
 
 
 
-  this->BlackKnights.SetOn(1,0);
+  this->BlackKnights.SetOn(1,0);// sets black knights
   this->BlackKnights.SetOn(6,0);
-  this->WhiteKnights.SetOn(1,7);
+  this->WhiteKnights.SetOn(1,7);//sets white knights
   this->WhiteKnights.SetOn(6,7);
 
-  this->BlackBishops.SetOn(2,0);
+  this->BlackBishops.SetOn(2,0);// sets bishops
   this->BlackBishops.SetOn(5,0);
   this->WhiteBishops.SetOn(2,7);
   this->WhiteBishops.SetOn(5,7);
 
-  this->BlackRooks.SetOn(0,0);
+  this->BlackRooks.SetOn(0,0);// sets rooks
   this->BlackRooks.SetOn(7,0);
   this->WhiteRooks.SetOn(0,7);
   this->WhiteRooks.SetOn(7,7);
 
-  this->BlackQueen.SetOn(3,0);
+  this->BlackQueen.SetOn(3,0);// sets queen
   this->WhiteQueen.SetOn(3,7);
 
-  this->BlackKing.SetOn(4,0);
+  this->BlackKing.SetOn(4,0);// sets king
   this->WhiteKing.SetOn(4,7);
 
-  this->BlackPieces = this->BlackKing;
+  this->BlackPieces = this->BlackKing;  //this variable keeps track of all the white pieces, doesn't distinguash between type
   this->BlackPieces = BitBoard::Or(BlackPawns,this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackQueen, this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackBishops, this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackKnights, this->BlackPieces);
   this->BlackPieces = BitBoard::Or(BlackRooks,this->BlackPieces);
 
-  this->WhitePieces = this->WhiteKing;
+  this->WhitePieces = this->WhiteKing;// keeps track of location of all the pieces
   this->WhitePieces = BitBoard::Or(WhitePawns,this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteQueen, this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteBishops, this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteKnights, this->WhitePieces);
   this->WhitePieces = BitBoard::Or(WhiteRooks,this->WhitePieces);
 
-  this->promote = false;
+  this->promote = false;// bool that keeps track if something needs to be promoted
 
 }
-BitBoard Chess::BlackPawnMoves(int x,int y){
+BitBoard Chess::BlackPawnMoves(int x,int y){// generates possible black pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedBlackPawns.IsSet(x,y)){
-    B.SetOn(x,y+2);
+    B.SetOn(x,y+2);// pawns can move 2 square in begining
   }
   if(BitBoard::Inside(x,y+1)){
     if(!this->WhitePieces.IsSet(x,y+1) && !this->BlackPieces.IsSet(x,y+1)){
-      B.SetOn(x,y+1);
+      B.SetOn(x,y+1);// standard forward by 1
     }
 
   }
   if(BitBoard::Inside(x-1,y+1)){
     if(this->WhitePieces.IsSet(x-1,y+1) ){
-      B.SetOn(x-1,y+1);
+      B.SetOn(x-1,y+1);//captures left
     }
     else if(this->UnMovedWhitePawns.IsSet(x-1,y+1)){
-      B.SetOn(x-1,y+1);
+      B.SetOn(x-1,y+1);//captures enpassent
     }
   }
   if(BitBoard::Inside(x+1,y+1)){
     if(this->WhitePieces.IsSet(x+1,y+1) ){
-      B.SetOn(x+1,y+1);
+      B.SetOn(x+1,y+1);// right
     }
     else if(this->UnMovedWhitePawns.IsSet(x+1,y+1)){
-      B.SetOn(x+1,y+1);
+      B.SetOn(x+1,y+1);// captures enpassent
     }
   }
   return B;
 }
-BitBoard Chess::WhitePawnMoves(int x,int y){
+BitBoard Chess::WhitePawnMoves(int x,int y){//generates white pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedWhitePawns.IsSet(x,y)){
     B.SetOn(x,y-2);
@@ -128,8 +128,7 @@ BitBoard Chess::WhitePawnMoves(int x,int y){
 
   return B;
 }
-BitBoard Chess::BlackKnightMoves(int x, int y){
-   // (x+1,y+2), (x+2,y+1)
+BitBoard Chess::BlackKnightMoves(int x, int y){// get knights ,oves
    BitBoard B;
    for(int i = -2; i<3; i++){
      for(int j = -2; j<3; j++){
@@ -236,13 +235,8 @@ BitBoard Chess::BlackRookMoves(int x, int y){
   BitBoard B;
   int i;
   i = 1;
-  //std::cout<<"Black pieces\n";
-  //this->BlackPieces.PrintBoard();
-//  std::cout<<"White pieces\n";
-  //this->WhitePieces.PrintBoard();
   while(BitBoard::Inside(x+i,y) && !this->BlackPieces.IsSet(x+i,y) ){
     B.SetOn(x+i,y);
-    //std::cout<<x+i<<y<<'\n';
     if( this->WhitePieces.IsSet(x+i,y) ){
       break;
     }
@@ -260,7 +254,7 @@ BitBoard Chess::BlackRookMoves(int x, int y){
   i = 1;
   while(BitBoard::Inside(x,y-i) && !this->BlackPieces.IsSet(x,y-i) ){
     B.SetOn(x,y-i);
-    //std::cout<<x<<y-1<<'\n';
+
     if( this->WhitePieces.IsSet(x,y-i) ){
       break;
     }
@@ -269,7 +263,6 @@ BitBoard Chess::BlackRookMoves(int x, int y){
   i = 1;
   while(BitBoard::Inside(x,y+i) && !this->BlackPieces.IsSet(x,y+i) ){
     B.SetOn(x,y+i);
-    std::cout<<x<<y+1<<'\n';
     if( this->WhitePieces.IsSet(x,y+i) ){
       break;
     }
@@ -431,7 +424,7 @@ void Chess::Promote(int xs ,int ys, int xd,int yd){
   }
 }
 void Chess::Move(int xs,int ys, int xd, int yd){
-  //if(!BitBoard::Inside(xs,ys) || !BitBoard::Inside(xd,yd)){return;}
+
   if(this->promote){Promote(xs,ys,xd,yd);
   return;}
 
@@ -609,5 +602,114 @@ void Chess::PrintBoard(){
     //std::cout << '\n'<<'\n';
   }
   //std::cout << '\n';
+
+}
+void Chess::PrintBoard(bool debug){
+  if(debug){
+    std::cout<<"\033[0;31m" <<board[i][j].piece.rep<<"\033[0m" <<"\t";
+    std::cout<<"\033[0;34m"<<board[i][j].piece.rep<<"\033[0m"<<"\t"
+
+    for(int j= 0; j<8;j++){
+      std::cout<<'\t'<<(char)(j+65)<<'\t';
+    }
+    std::cout<<'\n';
+    for(int j= 0; j<8;j++){
+      std::cout<<'\t'<<(j+1)<<"\t";
+      for(int i=0; i<8; i++){
+
+        if ( BlackPawns.IsSet(i,j)){
+          //std::cout<<'P';
+          std::cout<<"\t\033[0;34m"<<"P"<<"\033[0m"<<"\t";
+        }
+        else if(WhitePawns.IsSet(i,j)){
+          //std::cout<<'p';
+          std::cout<<"\t\033[0;31m" <<"P"<<"\033[0m" <<"\t";
+        }
+        else if(BlackKing.IsSet(i,j)){
+          //std::cout<<'K';
+          std::cout<<"\t\033[0;34m"<<"K"<<"\033[0m"<<"\t";
+        }
+        else if(WhiteKing.IsSet(i,j)){
+          //std::cout<<'k';
+          std::cout<<"\t\033[0;31m" <<"K"<<"\033[0m" <<"\t";
+        }
+        else if(BlackQueen.IsSet(i,j)){
+          //std::cout<<'Q';
+          std::cout<<"\t\033[0;34m"<<"Q"<<"\033[0m"<<"\t";
+        }
+        else if(WhiteQueen.IsSet(i,j)){
+          //std::cout<<'q';
+          std::cout<<"\t\033[0;31m" <<"Q"<<"\033[0m" <<"\t";
+        }
+        else if(BlackRooks.IsSet(i,j)){
+          //std::cout<<'R';
+          std::cout<<"\t\033[0;34m"<<"R"<<"\033[0m"<<"\t";
+        }
+        else if(WhiteRooks.IsSet(i,j)){
+          //std::cout<<'r';
+          std::cout<<"\t\033[0;31m" <<"R"<<"\033[0m" <<"\t";
+        }
+        else if(BlackBishops.IsSet(i,j)){
+          //std::cout<<'B';
+          std::cout<<"\t\033[0;34m"<<"B"<<"\033[0m"<<"\t";
+        }
+        else if(WhiteBishops.IsSet(i,j)){
+          //std::cout<<'b';
+          std::cout<<"\t\033[0;31m" <<"B"<<"\033[0m" <<"\t";
+        }
+        else if(BlackKnights.IsSet(i,j)){
+          //std::cout<<'N';
+          std::cout<<"\t\033[0;34m"<<"N"<<"\033[0m"<<"\t";
+        }
+        else if(WhiteKnights.IsSet(i,j)){
+          //std::cout<<'n';
+          std::cout<<"\t\033[0;31m" <<"N"<<"\033[0m" <<"\t";
+        }
+        else{
+          //std::cout<<"X";
+          std::cout<<"\tX\t";
+        }
+
+      }
+      //std::cout << '\n'<<'\n';
+    }
+    //std::cout << '\n';
+
+  }
+}
+Chess * Chess::Copy(){
+  Chess C;
+  C.board = this->board;
+
+  C.WhitePawns = this->WhitePawns;
+  C.BlackPawns = this->BlackPawns;
+
+  C.WhiteKnights = this->WhiteKnights;
+  C.BlackKnights = this->BlackKnights;
+
+  C.WhiteBishops = this->WhiteBishops;
+  C.BlackBishops = this->BlackBishops;
+
+  C.WhiteRooks = this->WhiteRooks;
+  C.BlackRooks = this->BlackRooks;
+
+  C.WhiteQueen = this->WhiteQueen;
+  C.BlackQueen = this->BlackQueen;
+
+  C.WhiteKing = this->WhiteKing;
+  C.BlackKing =this->BlackKing;
+
+  C.WhitePieces = this->WhitePieces;
+  C.BlackPieces = this->BlackPieces;
+
+  C.WhiteAttacks = this->WhiteAttacks;
+  C.BlackAttacks = this->BlackAttacks;
+
+  C.UnMovedBlackPawns = this->UnMovedBlackPawns;
+  C.UnMovedWhitePawns = this->UnMovedWhitePawns;
+
+
+  return C*;
+
 
 }

@@ -1,3 +1,5 @@
+
+
 #include "Chess.h"
 #include<stdio.h>
 #include <iostream>
@@ -128,7 +130,7 @@ BitBoard Chess::WhitePawnMoves(int x,int y){//generates white pawn moves at pos 
 
   return B;
 }
-BitBoard Chess::BlackKnightMoves(int x, int y){// get knights ,oves
+BitBoard Chess::BlackKnightMoves(int x, int y){// get knights ,moves
    BitBoard B;
    for(int i = -2; i<3; i++){
      for(int j = -2; j<3; j++){
@@ -326,7 +328,8 @@ BitBoard Chess::BlackKingMoves(int x,int y){
       if(i==0 || j== 0 || BitBoard::Inside(x+i,y+i) || this->BlackPieces.IsSet(x+i,y+i)){
         continue;
       }
-      B.SetOn(x+i,y+i);
+      if(BitBoard::Inside(x+i,y+i) && !this->BlackPieces.IsSet(x+i,y+i)){
+        B.SetOn(x+i,y+i);}
     }
   }
   return B;
@@ -338,7 +341,10 @@ BitBoard Chess::WhiteKingMoves(int x,int y){
       if(i==0 || j== 0 || BitBoard::Inside(x+i,y+i) || this->WhitePieces.IsSet(x+i,y+i)){
         continue;
       }
-      B.SetOn(x+i,y+i);
+
+      if(BitBoard::Inside(x+i,y+i) && !this->WhitePieces.IsSet(x+i,y+i)){
+        B.SetOn(x+i,y+i);
+      }
     }
   }
   return B;
@@ -606,110 +612,109 @@ void Chess::PrintBoard(){
 }
 void Chess::PrintBoard(bool debug){
   if(debug){
-    std::cout<<"\033[0;31m" <<board[i][j].piece.rep<<"\033[0m" <<"\t";
-    std::cout<<"\033[0;34m"<<board[i][j].piece.rep<<"\033[0m"<<"\t"
 
+    std::cout<<"   ";
     for(int j= 0; j<8;j++){
-      std::cout<<'\t'<<(char)(j+65)<<'\t';
+      std::cout<<' '<<(char)(j+65)<<' ';
     }
     std::cout<<'\n';
     for(int j= 0; j<8;j++){
-      std::cout<<'\t'<<(j+1)<<"\t";
+      std::cout<<' '<<(j+1)<<" ";
       for(int i=0; i<8; i++){
 
         if ( BlackPawns.IsSet(i,j)){
           //std::cout<<'P';
-          std::cout<<"\t\033[0;34m"<<"P"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"P"<<"\033[0m"<<" ";
         }
         else if(WhitePawns.IsSet(i,j)){
           //std::cout<<'p';
-          std::cout<<"\t\033[0;31m" <<"P"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"P"<<"\033[0m" <<" ";
         }
         else if(BlackKing.IsSet(i,j)){
           //std::cout<<'K';
-          std::cout<<"\t\033[0;34m"<<"K"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"K"<<"\033[0m"<<" ";
         }
         else if(WhiteKing.IsSet(i,j)){
           //std::cout<<'k';
-          std::cout<<"\t\033[0;31m" <<"K"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"K"<<"\033[0m" <<" ";
         }
         else if(BlackQueen.IsSet(i,j)){
           //std::cout<<'Q';
-          std::cout<<"\t\033[0;34m"<<"Q"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"Q"<<"\033[0m"<<" ";
         }
         else if(WhiteQueen.IsSet(i,j)){
           //std::cout<<'q';
-          std::cout<<"\t\033[0;31m" <<"Q"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"Q"<<"\033[0m" <<" ";
         }
         else if(BlackRooks.IsSet(i,j)){
           //std::cout<<'R';
-          std::cout<<"\t\033[0;34m"<<"R"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"R"<<"\033[0m"<<" ";
         }
         else if(WhiteRooks.IsSet(i,j)){
           //std::cout<<'r';
-          std::cout<<"\t\033[0;31m" <<"R"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"R"<<"\033[0m" <<" ";
         }
         else if(BlackBishops.IsSet(i,j)){
           //std::cout<<'B';
-          std::cout<<"\t\033[0;34m"<<"B"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"B"<<"\033[0m"<<" ";
         }
         else if(WhiteBishops.IsSet(i,j)){
           //std::cout<<'b';
-          std::cout<<"\t\033[0;31m" <<"B"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"B"<<"\033[0m" <<" ";
         }
         else if(BlackKnights.IsSet(i,j)){
           //std::cout<<'N';
-          std::cout<<"\t\033[0;34m"<<"N"<<"\033[0m"<<"\t";
+          std::cout<<" \033[0;34m"<<"N"<<"\033[0m"<<" ";
         }
         else if(WhiteKnights.IsSet(i,j)){
           //std::cout<<'n';
-          std::cout<<"\t\033[0;31m" <<"N"<<"\033[0m" <<"\t";
+          std::cout<<" \033[0;31m" <<"N"<<"\033[0m" <<" ";
         }
         else{
           //std::cout<<"X";
-          std::cout<<"\tX\t";
+          std::cout<<" X ";
         }
 
       }
-      //std::cout << '\n'<<'\n';
+      std::cout <<'\n';
     }
-    //std::cout << '\n';
+    std::cout << '\n';
 
   }
 }
 Chess * Chess::Copy(){
-  Chess C;
-  C.board = this->board;
+  Chess *C = new Chess();;
+  C->board = this->board;
 
-  C.WhitePawns = this->WhitePawns;
-  C.BlackPawns = this->BlackPawns;
+  C->WhitePawns = this->WhitePawns;
+  C->BlackPawns = this->BlackPawns;
 
-  C.WhiteKnights = this->WhiteKnights;
-  C.BlackKnights = this->BlackKnights;
+  C->WhiteKnights = this->WhiteKnights;
+  C->BlackKnights = this->BlackKnights;
 
-  C.WhiteBishops = this->WhiteBishops;
-  C.BlackBishops = this->BlackBishops;
+  C->WhiteBishops = this->WhiteBishops;
+  C->BlackBishops = this->BlackBishops;
 
-  C.WhiteRooks = this->WhiteRooks;
-  C.BlackRooks = this->BlackRooks;
+  C->WhiteRooks = this->WhiteRooks;
+  C->BlackRooks = this->BlackRooks;
 
-  C.WhiteQueen = this->WhiteQueen;
-  C.BlackQueen = this->BlackQueen;
+  C->WhiteQueen = this->WhiteQueen;
+  C->BlackQueen = this->BlackQueen;
 
-  C.WhiteKing = this->WhiteKing;
-  C.BlackKing =this->BlackKing;
+  C->WhiteKing = this->WhiteKing;
+  C->BlackKing =this->BlackKing;
 
-  C.WhitePieces = this->WhitePieces;
-  C.BlackPieces = this->BlackPieces;
+  C->WhitePieces = this->WhitePieces;
+  C->BlackPieces = this->BlackPieces;
 
-  C.WhiteAttacks = this->WhiteAttacks;
-  C.BlackAttacks = this->BlackAttacks;
+  C->WhiteAttacks = this->WhiteAttacks;
+  C->BlackAttacks = this->BlackAttacks;
 
-  C.UnMovedBlackPawns = this->UnMovedBlackPawns;
-  C.UnMovedWhitePawns = this->UnMovedWhitePawns;
+  C->UnMovedBlackPawns = this->UnMovedBlackPawns;
+  C->UnMovedWhitePawns = this->UnMovedWhitePawns;
 
 
-  return C*;
+  return C;
 
 
 }

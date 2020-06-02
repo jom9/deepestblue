@@ -84,10 +84,13 @@ class Board extends React.Component{
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
           console.log(response);
-          var editedMoves = this.state.moves
-          var move = String.fromCharCode(65 + this.state.xs)+this.state.ys+"=>"+String.fromCharCode(65 + i)+j;
-          editedMoves.push(move);
+
+          console.log(!RegExp("InvalidMove").test(response['data']['board']));
           if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){
+              console.log(!RegExp("InvalidMove").test(response['data']['board']));
+              var editedMoves = this.state.moves;
+              var move = String.fromCharCode(65 + this.state.xs)+this.state.ys+"=>"+String.fromCharCode(65 + i)+j;
+              editedMoves.push(move);
               this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1});
           }else{
               this.setState({xs : -1,ys:-1,xd:-1,yd:-1});

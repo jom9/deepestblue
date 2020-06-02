@@ -1,7 +1,7 @@
 .chessboard {
     float: left;
     width: 60%;
-    height: 800px;
+    height: 1200px;
     margin: 20px;
     border: 25px solid #333;
     align-items: center;
@@ -11,10 +11,10 @@
 }
 .black {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     background-color: #999;
-      font-size:50px;
+      font-size:60px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
@@ -22,10 +22,10 @@
 
 .white {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     background-color: #fff;
-    font-size:50px;
+    font-size:60px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
@@ -38,5 +38,6 @@
   width: 30% ;
 }
 .move{
+    font-size:25px;
     border: 1px solid #333;
 }

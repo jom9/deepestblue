@@ -6,6 +6,6 @@
 
 class CreateGame{
 public:
-  void GetGameFromCache(int xs,int ys, int xd,int yd);
+  Chess GetGameFromCache(int xs,int ys, int xd,int yd);
   void EmptyCache();
 };

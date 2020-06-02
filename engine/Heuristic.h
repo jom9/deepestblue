@@ -1,6 +1,5 @@
-#include "Chess.h"
-#include "BitBoard.h"
-#include "Heuristic.h"
+#include "../logic/Chess.h"
+#include "../logic/BitBoard.h"
 
 
 class Heuristic{

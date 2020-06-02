@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void CreateGame::GetGameFromCache(int xs,int ys, int xd,int yd){
+Chess CreateGame::GetGameFromCache(int xs,int ys, int xd,int yd){
   Chess C;
   C.StartGame();
   int cxs,cys,cxd,cyd;

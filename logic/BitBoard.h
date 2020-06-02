@@ -1,5 +1,6 @@
-//#ifndef __BITBOARD_H_INCLUDED__
-//#define __BITBOARD_H_INCLUDED__
+#ifndef __BITBOARD_H_INCLUDED__
+#define __BITBOARD_H_INCLUDED__
+
 #include <bitset>
 #include <cassert>
 #include<stdio.h>
@@ -16,7 +17,7 @@ class BitBoard{
     void SetOffRank(int r);
     bool IsSet(int x,int y);
     bool CombineXOR(BitBoard B );
-
+    int Count();
     void PrintBoard();
 
     static bool Inside(int x,int y);
@@ -25,3 +26,4 @@ class BitBoard{
     char Rep(int x, int y);
 
 };
+#endif

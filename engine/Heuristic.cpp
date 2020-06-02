@@ -30,11 +30,11 @@ float Heuristic::material(){
 
 float Heuristic::eval(){
   float s = 0;
-  s+=this.material();
-  s+=this.attacks();
+  s+=this->material();
+  s+=this->attacks();
   return s;
 }
 
 Heuristic::Heuristic(Chess C){
-  this.Game = C;
+  this->Game = C;
 }

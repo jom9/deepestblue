@@ -1,6 +1,9 @@
+
+
 #include "BitBoard.h"
 #include<stdio.h>
 #include <iostream>
+
 void BitBoard::SetAll(bool val){
   if(val)
       board.set();   //All bits on
@@ -51,6 +54,9 @@ BitBoard BitBoard::Or(BitBoard B1, BitBoard B2){
 }
 bool BitBoard::Inside(int x,int y){
   return (x+8*y)<64 && (x+8*y)>=0;
+}
+int BitBoard::Count(){
+  return this->board.count();
 }
 void BitBoard::PrintBoard(){
   std::cout << '\n'<<'\n';

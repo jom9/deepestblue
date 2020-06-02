@@ -1,4 +1,7 @@
 // Board is set up as follows: bottom corner is (0,0) and top right corner (7,7)
+#ifndef CHESS_H
+#define CHESS_H
+
 #include "BitBoard.h"
 #include<stdio.h>
 
@@ -35,11 +38,9 @@ class Chess{
     BitBoard UnMovedBlackPawns;
     BitBoard UnMovedWhitePawns;
 
-    //std::List<BitBoard> AllWhiteMoves;
-    //std::List<BitBoard> AllBlackMoves;
 
-    bool promote;
-    char player;
+    bool promote=false;
+    char player='w';
     void Update();// must update all bit boards!
     void StartGame();// same dependencieces as Update();
     Chess * Copy();
@@ -51,7 +52,7 @@ class Chess{
 
     void PrintBoard();// prints current board, for php calls
     void PrintBoard(bool debug);// prints board, for debuging
-    BitBoard BlackPawnMoves(int x,int y)
+    BitBoard BlackPawnMoves(int x,int y);
     BitBoard WhitePawnMoves(int x,int y);
     BitBoard BlackKnightMoves(int x, int y);
     BitBoard WhiteKnightMoves(int x, int y);
@@ -69,3 +70,4 @@ class Chess{
 
 
 };
+#endif

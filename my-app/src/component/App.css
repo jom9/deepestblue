@@ -36,6 +36,11 @@
 .App-link {
   color: #61dafb;
 }
+.Second{
+  border: 25px solid #333;
+  flex-direction: column;
+  background-color: #D3D3D3;
+}
 
 @keyframes App-logo-spin {
   from {

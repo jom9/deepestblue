@@ -144,15 +144,15 @@ class Board extends React.Component{
     console.log(this.state);
     return(
 
-    <div >
+      <div className="Second">
 
-    <div>  <h2>Current Move: ({this.state.xs}, {this.state.ys})=>({this.state.xd}, {this.state.yd}))</h2></div>
+       <h2>Current Move: ({this.state.xs}, {this.state.ys})=>({this.state.xd}, {this.state.yd}))</h2>
 
 
       <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
-      <MovesList moves={this.state.moves} />
+      <MovesList moves={this.state.moves} ></MovesList>
+      </div>
 
-    </div>
     );
   }
 }

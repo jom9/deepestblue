@@ -516,20 +516,3 @@ void Engine::SuggestMove(){
   }
   max->Game->PrintBoard(true);
 }
-
-int main(){
-  Chess C;
-  C.StartGame();
-  C.Move(4,6,4,4);
-  C.Move(4,1,4,3);
-  C.Move(6,7,5,5);
-  C.Move(6,0,5,2);
-  C.Move(6,7,5,5);
-  C.Move(6,0,5,2);
-  C.PrintBoard(true);
-  int depth= 2;
-  Engine E(C,depth);
-
-  E.SuggestMove();
-
-}

@@ -2,6 +2,7 @@
 
 #include "BitBoard.h"
 #include<stdio.h>
+#include <exception>
 #include <iostream>
 
 void BitBoard::SetAll(bool val){
@@ -16,6 +17,8 @@ void BitBoard::SetOn(int x, int y){
       this->board[(x+8*y)] =1 ;
   }
   else{
+    std::cout<<x<<y;
+    throw std::logic_error("error message");
     std::cout << "Something's Here" << '\n';
   }
 }
@@ -53,7 +56,7 @@ BitBoard BitBoard::Or(BitBoard B1, BitBoard B2){
   return B;
 }
 bool BitBoard::Inside(int x,int y){
-  return (x+8*y)<64 && (x+8*y)>=0;
+  return x<8 && y<8 && x>=0 && y>=0;
 }
 int BitBoard::Count(){
   return this->board.count();

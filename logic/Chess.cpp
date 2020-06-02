@@ -3,6 +3,7 @@
 #include "Chess.h"
 #include<stdio.h>
 #include <iostream>
+
 /*
   00 01 02 03 04 05 06 07
   08 09 10 11 12 13 14 15
@@ -239,7 +240,9 @@ BitBoard Chess::BlackRookMoves(int x, int y){
   BitBoard B;
   int i;
   i = 1;
+
   while(BitBoard::Inside(x+i,y) && !this->BlackPieces.IsSet(x+i,y) ){
+
     B.SetOn(x+i,y);
     if( this->WhitePieces.IsSet(x+i,y) ){
       break;
@@ -272,6 +275,7 @@ BitBoard Chess::BlackRookMoves(int x, int y){
     }
     i++;
   }
+
   return B;
 }
 BitBoard Chess::WhiteRookMoves(int x, int y){
@@ -378,14 +382,14 @@ void Chess::RemovePiece(int x, int y, char c){
       if(this->WhiteBishops.IsSet(x,y)){ this->WhiteBishops.SetOff(x,y); }
       if(this->WhiteRooks.IsSet(x,y)){ this->WhiteRooks.SetOff(x,y); }
       if(this->WhiteKnights.IsSet(x,y)){ this->WhiteKnights.SetOff(x,y); }
-      if(this->WhitePawns.IsSet(x,y)){ this->WhitePawns.SetOff(x,y); }
+      if(this->WhiteQueen.IsSet(x,y)){ this->WhiteQueen.SetOff(x,y); }
     }
     else if( c == 'w'){
       if(this->BlackPawns.IsSet(x,y)){ this->BlackPawns.SetOff(x,y); }
       if(this->BlackBishops.IsSet(x,y)){ this->BlackBishops.SetOff(x,y); }
       if(this->BlackRooks.IsSet(x,y)){ this->BlackRooks.SetOff(x,y); }
       if(this->BlackKnights.IsSet(x,y)){ this->BlackKnights.SetOff(x,y); }
-      if(this->BlackPawns.IsSet(x,y)){ this->BlackPawns.SetOff(x,y); }
+      if(this->BlackQueen.IsSet(x,y)){ this->BlackQueen.SetOff(x,y); }
     }
 }
 void Chess::Promote(int xs ,int ys, int xd,int yd){
@@ -478,7 +482,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->WhiteRooks.SetOn(xd,yd);
     }
     else{
-      std::cout<<"Nothing here \n";
+      throw InvalidMove();
     }
     this->player = 'b';
     UnMovedBlackPawns.SetOffRank(1);
@@ -529,7 +533,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->BlackRooks.SetOn(xd,yd);
     }
     else{
-      std::cout<<"Nothing here \n";
+      throw InvalidMove();
     }
     this->player= 'w';
     this->UnMovedWhitePawns.SetOffRank(6);

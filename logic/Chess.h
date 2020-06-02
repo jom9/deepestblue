@@ -1,10 +1,15 @@
 // Board is set up as follows: bottom corner is (0,0) and top right corner (7,7)
 #ifndef CHESS_H
 #define CHESS_H
-
+#include <exception>
 #include "BitBoard.h"
 #include<stdio.h>
 
+class InvalidMove : public std::exception
+{
+public:
+  virtual const char* what() const noexcept{ return "Invalid Move"; }
+};
 class Chess{
   private:
 

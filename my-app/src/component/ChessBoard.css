@@ -1,5 +1,6 @@
 .chessboard {
-    width: 800px;
+    float: left;
+    width: 60%;
     height: 800px;
     margin: 20px;
     border: 25px solid #333;
@@ -28,4 +29,14 @@
     text-align:center;
     display: table-cell;
     vertical-align:middle;
+}
+.movelist {
+  align-items: right;
+  background-color: #d3dff9;
+  border: 10px solid #333;
+  float :left;
+  width: 30% ;
+}
+.move{
+    border: 1px solid #333;
 }

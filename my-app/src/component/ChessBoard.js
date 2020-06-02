@@ -1,7 +1,10 @@
 
 import React from 'react';
 import './ChessBoard.css';
+import Square from "./Square.js";
+import MovesList from "./MovesList.js";
 import axios from 'axios';
+
 var backLoc= "http://localhost:8000/backend/backend.php";
 function GetPiece(c){
 
@@ -46,48 +49,8 @@ function GetPiece(c){
   }
 }
 
-class Square extends React.Component{
-  constructor(props){
-    super(props);
-    this.state ={
-      x : this.props.x,
-      y : this.props.y,
-      piece:this.props.piece
-
-    };
-
-    if(this.state.x%2==this.state.y%2){
-      this.state.color = "black";
-    }
-    else{
-      this.state.color = "white";
-    }
-
-  }
-
-  render(){
-    return(
-      <button className = {this.state.color} onClick={this.props.func.bind(this,this.state.x,this.state.y)}  >{this.props.piece}</button>
-    );
-  }
-
-}
-class MovesList extends React.Component{
-  constructor(props){
-    super(props);
-
-    this.state={
-        moves :this.props.moves
-    };
-    this.state.ls = this.state.moves.map((move) =><li>{move}</li>);
-  }
-
-  render(){
-   return (<ol>{this.state.ls}</ol>);
-  }
 
 
-}
 class Board extends React.Component{
   constructor(props){
     super(props);
@@ -121,16 +84,22 @@ class Board extends React.Component{
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
           console.log(response);
+          var editedMoves = this.state.moves
+          var move = String.fromCharCode(65 + this.state.xs)+this.state.ys+"=>"+String.fromCharCode(65 + i)+j;
+          editedMoves.push(move);
+          if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){
+              this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1});
+          }else{
+              this.setState({xs : -1,ys:-1,xd:-1,yd:-1});
+          }
 
-          this.setState({pieces:response['data']['board'],moves:m,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1});
 
-          //console.log(this.state);
+
         }, (error) => {
           console.log(error);
         });
 
 
-        //console.log(this.state);
     }
 
   }
@@ -178,7 +147,7 @@ class Board extends React.Component{
 
 
       <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
-      <MovesList moves={this.state.moves}/>
+      <MovesList moves={this.state.moves} />
 
     </div>
     );

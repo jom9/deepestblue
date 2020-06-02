@@ -8,7 +8,7 @@
 if(isset($_POST['move'])){
   $move = htmlspecialchars($_POST['move']);
 
-  $response->board = shell_exec('"../logic/a.exe" '.$move);
+  $response->board = shell_exec('GetGameFromCache.exe '.$move);
   //$response->board = '"../logic/a.exe" '.$move;
   //$response->board = "Work PLZ";
   //echo shell_exec('"../logic/a.exe" new 4 6 4 4 ');

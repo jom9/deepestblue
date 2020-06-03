@@ -78,7 +78,7 @@ Chess * CreateGame::GetGameFromString(char * s,char player){
           break;
         case 'N':
           C->BlackPieces.SetOn(i,j);
-          C->BlackKingMoves(i,j);
+          C->BlackKnights.SetOn(i,j);
           break;
         case 'n':
           C->WhitePieces.SetOn(i,j);

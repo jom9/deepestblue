@@ -12,6 +12,7 @@ class Node{
     float Value;
     Chess * Game;
     Node * Parent;
+    std::tuple <int,int,int,int> move;
     void GenChildren();
     std::list<Node *> Children;
 
@@ -29,7 +30,7 @@ class Node{
     void BlackQueenMoves(int x,int y);
     void BlackKingMoves(int x,int y);
 
-    Node(Chess *G);
+    Node(Chess *G,int xs,int ys,int xd,int yd);
 };
 
 

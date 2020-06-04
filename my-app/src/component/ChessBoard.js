@@ -3,6 +3,7 @@ import React from 'react';
 import './ChessBoard.css';
 import Square from "./Square.js";
 import MovesList from "./MovesList.js";
+import SuggestMove from "./SuggestMove.js";
 import axios from 'axios';
 
 var backLoc= "http://localhost:8000/backend/backend.php";
@@ -63,7 +64,8 @@ class Board extends React.Component{
       xd:-1,
       yd:-1,
       pieces:"RNBQKBNRPPPPPPPPXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXpppppppprnbqkbnr",
-      moves:[]
+      moves:[],
+      player:'w'
     };
 
     this.setMove = this.setMove.bind(this);
@@ -73,7 +75,14 @@ class Board extends React.Component{
 
 
 
-
+  oppPlayer(c){
+    if(c=='w'){
+      return 'b';
+    }
+    else if(c=='b'){
+      return 'w';
+    }
+  }
   SendMove(i,j){
     var m = this.state.src + " " + this.state.xs + " " + this.state.ys +" "+i+" "+j;
 
@@ -89,9 +98,9 @@ class Board extends React.Component{
           if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){
               console.log(!RegExp("InvalidMove").test(response['data']['board']));
               var editedMoves = this.state.moves;
-              var move = String.fromCharCode(65 + this.state.xs)+this.state.ys+"=>"+String.fromCharCode(65 + i)+j;
+              var move = String.fromCharCode(65 + this.state.xs)+(this.state.ys+1)+"=>"+String.fromCharCode(65 + i)+(j+1);
               editedMoves.push(move);
-              this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1});
+              this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)});
           }else{
               this.setState({xs : -1,ys:-1,xd:-1,yd:-1});
           }
@@ -133,21 +142,19 @@ class Board extends React.Component{
     var i;
 
     for(i=0;i<8;i++){
-      L[i] = [<tr key={i}>{this.renderRow(i)}</tr>] ;
+
+      L[i] = [<tr key={i}><th style ={{color:"#DCDCDC"}}>{8-i}</th>{this.renderRow(i)}</tr>] ;
 
     }
-
+    L[8]= <tr> {['','A','B','C','D','E','F','G','H'].map( (file) => <th style ={{color:"#DCDCDC"}}>{file}</th> )}</tr>;
     return L;
   }
 
   render(){
-    console.log(this.state);
     return(
 
       <div className="Second">
-
-       <h2>Current Move: ({this.state.xs}, {this.state.ys})=>({this.state.xd}, {this.state.yd}))</h2>
-
+       <SuggestMove player={this.state.player} board={this.state.pieces}/>
 
       <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
       <MovesList moves={this.state.moves} ></MovesList>

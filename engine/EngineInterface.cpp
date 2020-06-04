@@ -11,9 +11,7 @@ int main(int argc,char ** argv){
   int depth = atoi(argv[2]);
   //cout<<xs<<ys<<"\n";
   Chess* C = CreateGame::GetGameFromString(board,player);
-  Chess C1;
-  C1.StartGame();
-  Engine E(C1,2);
+  Engine E(*C,depth);
   E.SuggestMove();
 
 

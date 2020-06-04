@@ -509,13 +509,11 @@ void Engine::SuggestMove(){
   Node * root = new Node( &(this->CurrentGame) ,-1,-1,-1,-1);
   alphabeta(root,this->depth,-10000,10000,true);
   Node* max = new Node(root->Game->Copy(),-1,-1,-1,-1);
+
   max->Value =-10000;
 
   for (std::list<Node * >::iterator child=root->Children.begin(); child != root->Children.end(); ++child){
-    //std::cout<<*child<<"\n";
-    //(*child)->Game->PrintBoard(true);
     max = max->Value >= (*child)->Value? max: *child;
   }
-  //max->Game->PrintBoard(true);
   std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
 }

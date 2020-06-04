@@ -10,9 +10,6 @@ class MovesList extends React.Component{
     };
 
   }
-  componentDidMount() {
-
-  }
   render(){
     this.state.moves = this.props.moves;
     this.state.ls = [...Array(this.props.moves.length).keys()].map((move) =><li className ="move" key={move}>{this.props.moves[move]}</li>);

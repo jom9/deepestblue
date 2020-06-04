@@ -26,6 +26,7 @@ float Heuristic::material(){
 
   s+=3*Game.WhiteKing.Count();
   s-=3*Game.BlackKing.Count();
+  return s;
 }
 
 float Heuristic::eval(){

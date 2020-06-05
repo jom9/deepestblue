@@ -436,8 +436,8 @@ void Chess::Promote(int xs ,int ys, int xd,int yd){
   }
 }
 void Chess::Move(int xs,int ys, int xd, int yd){
-  if(this->promote){Promote(xs,ys,xd,yd);
-  return;}
+  //if(this->promote){Promote(xs,ys,xd,yd);
+  //return;}
 
   if( this->player == 'w' ){
     if(this->WhiteKing.IsSet(xs,ys) && this->WhiteKingMoves(xs,ys).IsSet(xd,yd) ){
@@ -462,7 +462,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->RemovePiece(xd,yd,this->player);
       this->WhitePawns.SetOn(xd,yd);
       if(yd == 0){
-        this->promote = true;
+        //this->promote = true;
         return;
       }
     }
@@ -482,10 +482,11 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->WhiteRooks.SetOn(xd,yd);
     }
     else{
-      throw InvalidMove();
+      this->PrintBoard(true);
+      //throw InvalidMove();
     }
     this->player = 'b';
-    UnMovedBlackPawns.SetOffRank(1);
+    this->UnMovedBlackPawns.SetOffRank(1);
   }
   else if( this->player == 'b'){
     if(this->BlackKing.IsSet(xs,ys)  && this->BlackKingMoves(xs,ys).IsSet(xd,yd)){
@@ -511,7 +512,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
       if(yd == 7){
-        this->promote = true;
+        //this->promote = true;
         return;
       }
     }
@@ -533,7 +534,8 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->BlackRooks.SetOn(xd,yd);
     }
     else{
-      throw InvalidMove();
+      this->PrintBoard(true);
+      //throw InvalidMove("ERROR HERE");
     }
     this->player= 'w';
     this->UnMovedWhitePawns.SetOffRank(6);

@@ -75,7 +75,10 @@ void Chess::StartGame(){
 BitBoard Chess::BlackPawnMoves(int x,int y){// generates possible black pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedBlackPawns.IsSet(x,y)){
-    B.SetOn(x,y+2);// pawns can move 2 square in begining
+    if(!this->WhitePieces.IsSet(x,y+1) && !this->BlackPieces.IsSet(x,y+1) && !this->WhitePieces.IsSet(x,y+2) && !this->BlackPieces.IsSet(x,y+2)){
+      B.SetOn(x,y+2);// pawns can move 2 square in begining
+    }
+
   }
   if(BitBoard::Inside(x,y+1)){
     if(!this->WhitePieces.IsSet(x,y+1) && !this->BlackPieces.IsSet(x,y+1)){
@@ -104,7 +107,10 @@ BitBoard Chess::BlackPawnMoves(int x,int y){// generates possible black pawn mov
 BitBoard Chess::WhitePawnMoves(int x,int y){//generates white pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedWhitePawns.IsSet(x,y)){
-    B.SetOn(x,y-2);
+    if(!this->WhitePieces.IsSet(x,y-1) && !this->BlackPieces.IsSet(x,y-1) && !this->WhitePieces.IsSet(x,y-2) && !this->BlackPieces.IsSet(x,y-2)){
+      B.SetOn(x,y-2);
+    }
+
   }
   if(BitBoard::Inside(x,y-1)){
     if(!this->WhitePieces.IsSet(x,y-1) && !this->BlackPieces.IsSet(x,y-1)){
@@ -451,9 +457,10 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->WhiteQueen.SetOn(xd,yd);
     }
     else if(this->WhitePawns.IsSet(xs,ys) && this->WhitePawnMoves(xs,ys).IsSet(xd,yd)){
+    
       if(this->UnMovedWhitePawns.IsSet(xs,ys)){
-        this->UnMovedWhitePawns.SetOff(xs,ys);
-        this->UnMovedWhitePawns.SetOn(xs,ys-1);
+        this->UnMovedWhitePawns.SetOff(xs,6);
+        this->UnMovedWhitePawns.SetOn(xs,5);
       }
       if(this->UnMovedBlackPawns.IsSet(xd,yd)){
         this->RemovePiece(xd,3,this->player);
@@ -485,7 +492,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       throw InvalidMove();
     }
     this->player = 'b';
-    UnMovedBlackPawns.SetOffRank(1);
+    this->UnMovedBlackPawns.SetOffRank(2);
   }
   else if( this->player == 'b'){
     if(this->BlackKing.IsSet(xs,ys)  && this->BlackKingMoves(xs,ys).IsSet(xd,yd)){
@@ -501,14 +508,14 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     else if(this->BlackPawns.IsSet(xs,ys)&& this->BlackPawnMoves(xs,ys).IsSet(xd,yd)){
       if(UnMovedBlackPawns.IsSet(xs,ys)){
         this->UnMovedBlackPawns.SetOff(xs,ys);
-        this->UnMovedBlackPawns.SetOn(xs,ys+ 1);
+        this->UnMovedBlackPawns.SetOn(xs,2);
       }
 
       this->BlackPawns.SetOff(xs,ys);
       if(this->UnMovedWhitePawns.IsSet(xd,yd)){
         this->RemovePiece(xd,5,player);
       }
-      RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
       if(yd == 7){
         this->promote = true;
@@ -536,7 +543,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       throw InvalidMove();
     }
     this->player= 'w';
-    this->UnMovedWhitePawns.SetOffRank(6);
+    this->UnMovedWhitePawns.SetOffRank(5);
 
   }
   Update();

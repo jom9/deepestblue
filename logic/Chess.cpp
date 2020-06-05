@@ -448,16 +448,16 @@ void Chess::Move(int xs,int ys, int xd, int yd){
   if( this->player == 'w' ){
     if(this->WhiteKing.IsSet(xs,ys) && this->WhiteKingMoves(xs,ys).IsSet(xd,yd) ){
       this->WhiteKing.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteKing.SetOn(xd,yd);
     }
     else if(this->WhiteQueen.IsSet(xs,ys) && this->WhiteQueenMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteQueen.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteQueen.SetOn(xd,yd);
     }
     else if(this->WhitePawns.IsSet(xs,ys) && this->WhitePawnMoves(xs,ys).IsSet(xd,yd)){
-    
+
       if(this->UnMovedWhitePawns.IsSet(xs,ys)){
         this->UnMovedWhitePawns.SetOff(xs,6);
         this->UnMovedWhitePawns.SetOn(xs,5);
@@ -475,17 +475,17 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else if(this->WhiteBishops.IsSet(xs,ys) && this->WhiteBishopMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteBishops.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteBishops.SetOn(xd,yd);
     }
     else if(this->WhiteKnights.IsSet(xs,ys) && this->WhiteKnightMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteKnights.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteKnights.SetOn(xd,yd);
     }
     else if(this->WhiteRooks.IsSet(xs,ys) && this->WhiteRookMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteRooks.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteRooks.SetOn(xd,yd);
     }
     else{
@@ -497,12 +497,12 @@ void Chess::Move(int xs,int ys, int xd, int yd){
   else if( this->player == 'b'){
     if(this->BlackKing.IsSet(xs,ys)  && this->BlackKingMoves(xs,ys).IsSet(xd,yd)){
       this->BlackKing.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackKing.SetOn(xd,yd);
     }
     else if(this->BlackQueen.IsSet(xs,ys)&& this->BlackQueenMoves(xs,ys).IsSet(xd,yd)){
       this->BlackQueen.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackQueen.SetOn(xd,yd);
     }
     else if(this->BlackPawns.IsSet(xs,ys)&& this->BlackPawnMoves(xs,ys).IsSet(xd,yd)){
@@ -513,7 +513,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
 
       this->BlackPawns.SetOff(xs,ys);
       if(this->UnMovedWhitePawns.IsSet(xd,yd)){
-        this->RemovePiece(xd,5,player);
+        this->RemovePiece(xd,5,this->player);
       }
       this->RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
@@ -525,18 +525,18 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     else if(this->BlackBishops.IsSet(xs,ys) && this->BlackBishopMoves(xs,ys).IsSet(xd,yd)){
 
       this->BlackBishops.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackBishops.SetOn(xd,yd);
     }
     else if(this->BlackKnights.IsSet(xs,ys)&& this->BlackKnightMoves(xs,ys).IsSet(xd,yd)){
       this->BlackKnights.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackKnights.SetOn(xd,yd);
     }
     else if(this->BlackRooks.IsSet(xs,ys)&& this->BlackRookMoves(xs,ys).IsSet(xd,yd)){
 
       this->BlackRooks.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackRooks.SetOn(xd,yd);
     }
     else{

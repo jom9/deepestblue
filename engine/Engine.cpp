@@ -10,8 +10,7 @@ void Node::WhitePawnMoves(int x,int y){
   if(this->Game->UnMovedWhitePawns.IsSet(x,y)){
     if(!this->Game->WhitePieces.IsSet(x,y-1) && !this->Game->BlackPieces.IsSet(x,y-1)){
         if(!this->Game->WhitePieces.IsSet(x,y-2) && !this->Game->BlackPieces.IsSet(x,y-2)){
-        Chess *G = new Chess();
-        G = this->Game->Copy();
+        Chess *G  = this->Game->Copy();
         G->Move(x,y,x,y-2);
 
 
@@ -143,8 +142,8 @@ void Node::WhiteBishopMoves(int x, int y){
 void Node::WhiteRookMoves(int x, int y){
   int i;
   i = 1;
-  while(BitBoard::Inside(x+i,y) && !this->Game->WhitePieces.IsSet(x+i,y) ){
 
+  while(BitBoard::Inside(x+i,y) && !this->Game->WhitePieces.IsSet(x+i,y) ){
     Chess * G = this->Game->Copy();
     G->Move(x,y,x+i,y);
     Node *Child = new Node(G,x,y,x+i,y);
@@ -430,27 +429,27 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            std::cout<<i<<j<<"B TEST\n";
+            //std::cout<<i<<j<<"B TEST\n";
             //this->Game->PrintBoard(true);
             if(this->Game->BlackPieces.IsSet(i,j)){
                 if(this->Game->BlackKing.IsSet(i,j)){
-                  std::cout<<'K'<<'\n';
-               this->BlackKingMoves(i,j);
+                  //std::cout<<'K'<<'\n';
+                  this->BlackKingMoves(i,j);
                 }
                 else if(this->Game->BlackKnights.IsSet(i,j)){
-                  std::cout<<'N'<<'\n';
-                this->BlackKnightMoves(i,j);
+                  //std::cout<<'N'<<'\n';
+                  this->BlackKnightMoves(i,j);
                 }
                 else if(this->Game->BlackRooks.IsSet(i,j)){
-                  std::cout<<'R'<<'\n';
+                  //std::cout<<'R'<<'\n';
                   this->BlackRookMoves(i,j);
                 }
                 else if(this->Game->BlackQueen.IsSet(i,j)){
-                  std::cout<<'Q'<<'\n';
+                  //std::cout<<'Q'<<'\n';
                   this->BlackQueenMoves(i,j);
                 }
                 else if(this->Game->BlackPawns.IsSet(i,j)){
-                  std::cout<<'P'<<'\n';
+                  //std::cout<<'P'<<'\n';
 
                   this->BlackPawnMoves(i,j);
                 }
@@ -462,27 +461,27 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            std::cout<<i<<j<<"W TEST\n";
+            //std::cout<<i<<j<<"W TEST\n";
             //this->Game->PrintBoard(true);
             if(this->Game->WhitePieces.IsSet(i,j)){
               if(this->Game->WhiteKing.IsSet(i,j)){
-                std::cout<<'K'<<'\n';
+                //std::cout<<'K'<<'\n';
                 this->WhiteKingMoves(i,j);
               }
               else if(this->Game->WhiteKnights.IsSet(i,j)){
-                std::cout<<'N'<<'\n';
+                //std::cout<<'N'<<'\n';
                 this->WhiteKnightMoves(i,j);
               }
               else if(this->Game->WhiteRooks.IsSet(i,j)){
-                std::cout<<'R'<<'\n';
+                //std::cout<<'R'<<'\n';
                 this->WhiteRookMoves(i,j);
               }
               else if(this->Game->WhiteQueen.IsSet(i,j)){
-                std::cout<<'Q'<<'\n';
+                //std::cout<<'Q'<<'\n';
                 this->WhiteQueenMoves(i,j);
               }
               else if(this->Game->WhitePawns.IsSet(i,j)){
-                std::cout<<'P'<<'\n';
+                //std::cout<<'P'<<'\n';
                 this->WhitePawnMoves(i,j);
               }
             }
@@ -528,6 +527,7 @@ float Engine::alphabeta(Node *N, int depth, float alpha, float beta, bool maximi
   }
 }
 void Engine::SuggestMove(){
+  try{
   Node * root = new Node( &(this->CurrentGame) ,-1,-1,-1,-1);
   alphabeta(root,this->depth,-10000,10000,true);
   Node* max = new Node(root->Game->Copy(),-1,-1,-1,-1);
@@ -540,4 +540,8 @@ void Engine::SuggestMove(){
   }
   //max->Game->PrintBoard(true);
   std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
+  }
+  catch(std::bad_alloc){
+    std::cout<<"OverLoad\n";
+  }
 }

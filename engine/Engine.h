@@ -9,7 +9,7 @@
 #include <list>
 class Node{
   public:
-    float Value;
+    float Value = 0;
     Chess * Game;
     Node * Parent;
     std::tuple <int,int,int,int> move;

@@ -75,7 +75,10 @@ void Chess::StartGame(){
 BitBoard Chess::BlackPawnMoves(int x,int y){// generates possible black pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedBlackPawns.IsSet(x,y)){
-    B.SetOn(x,y+2);// pawns can move 2 square in begining
+    if(!this->WhitePieces.IsSet(x,y+1) && !this->BlackPieces.IsSet(x,y+1) && !this->WhitePieces.IsSet(x,y+2) && !this->BlackPieces.IsSet(x,y+2)){
+      B.SetOn(x,y+2);// pawns can move 2 square in begining
+    }
+
   }
   if(BitBoard::Inside(x,y+1)){
     if(!this->WhitePieces.IsSet(x,y+1) && !this->BlackPieces.IsSet(x,y+1)){
@@ -104,7 +107,10 @@ BitBoard Chess::BlackPawnMoves(int x,int y){// generates possible black pawn mov
 BitBoard Chess::WhitePawnMoves(int x,int y){//generates white pawn moves at pos x y
   BitBoard B;
   if(this->UnMovedWhitePawns.IsSet(x,y)){
-    B.SetOn(x,y-2);
+    if(!this->WhitePieces.IsSet(x,y-1) && !this->BlackPieces.IsSet(x,y-1) && !this->WhitePieces.IsSet(x,y-2) && !this->BlackPieces.IsSet(x,y-2)){
+      B.SetOn(x,y-2);
+    }
+
   }
   if(BitBoard::Inside(x,y-1)){
     if(!this->WhitePieces.IsSet(x,y-1) && !this->BlackPieces.IsSet(x,y-1)){
@@ -442,18 +448,19 @@ void Chess::Move(int xs,int ys, int xd, int yd){
   if( this->player == 'w' ){
     if(this->WhiteKing.IsSet(xs,ys) && this->WhiteKingMoves(xs,ys).IsSet(xd,yd) ){
       this->WhiteKing.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteKing.SetOn(xd,yd);
     }
     else if(this->WhiteQueen.IsSet(xs,ys) && this->WhiteQueenMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteQueen.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteQueen.SetOn(xd,yd);
     }
     else if(this->WhitePawns.IsSet(xs,ys) && this->WhitePawnMoves(xs,ys).IsSet(xd,yd)){
+
       if(this->UnMovedWhitePawns.IsSet(xs,ys)){
-        this->UnMovedWhitePawns.SetOff(xs,ys);
-        this->UnMovedWhitePawns.SetOn(xs,ys-1);
+        this->UnMovedWhitePawns.SetOff(xs,6);
+        this->UnMovedWhitePawns.SetOn(xs,5);
       }
       if(this->UnMovedBlackPawns.IsSet(xd,yd)){
         this->RemovePiece(xd,3,this->player);
@@ -468,17 +475,17 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else if(this->WhiteBishops.IsSet(xs,ys) && this->WhiteBishopMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteBishops.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteBishops.SetOn(xd,yd);
     }
     else if(this->WhiteKnights.IsSet(xs,ys) && this->WhiteKnightMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteKnights.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteKnights.SetOn(xd,yd);
     }
     else if(this->WhiteRooks.IsSet(xs,ys) && this->WhiteRookMoves(xs,ys).IsSet(xd,yd)){
       this->WhiteRooks.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->WhiteRooks.SetOn(xd,yd);
     }
     else{
@@ -486,30 +493,34 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       //throw InvalidMove();
     }
     this->player = 'b';
+<<<<<<< HEAD
     this->UnMovedBlackPawns.SetOffRank(1);
+=======
+    this->UnMovedBlackPawns.SetOffRank(2);
+>>>>>>> dfc52fd55200d36adc53d2c2d194f0277246871f
   }
   else if( this->player == 'b'){
     if(this->BlackKing.IsSet(xs,ys)  && this->BlackKingMoves(xs,ys).IsSet(xd,yd)){
       this->BlackKing.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackKing.SetOn(xd,yd);
     }
     else if(this->BlackQueen.IsSet(xs,ys)&& this->BlackQueenMoves(xs,ys).IsSet(xd,yd)){
       this->BlackQueen.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackQueen.SetOn(xd,yd);
     }
     else if(this->BlackPawns.IsSet(xs,ys)&& this->BlackPawnMoves(xs,ys).IsSet(xd,yd)){
       if(UnMovedBlackPawns.IsSet(xs,ys)){
         this->UnMovedBlackPawns.SetOff(xs,ys);
-        this->UnMovedBlackPawns.SetOn(xs,ys+ 1);
+        this->UnMovedBlackPawns.SetOn(xs,2);
       }
 
       this->BlackPawns.SetOff(xs,ys);
       if(this->UnMovedWhitePawns.IsSet(xd,yd)){
-        this->RemovePiece(xd,5,player);
+        this->RemovePiece(xd,5,this->player);
       }
-      RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
       if(yd == 7){
         //this->promote = true;
@@ -519,18 +530,18 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     else if(this->BlackBishops.IsSet(xs,ys) && this->BlackBishopMoves(xs,ys).IsSet(xd,yd)){
 
       this->BlackBishops.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackBishops.SetOn(xd,yd);
     }
     else if(this->BlackKnights.IsSet(xs,ys)&& this->BlackKnightMoves(xs,ys).IsSet(xd,yd)){
       this->BlackKnights.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackKnights.SetOn(xd,yd);
     }
     else if(this->BlackRooks.IsSet(xs,ys)&& this->BlackRookMoves(xs,ys).IsSet(xd,yd)){
 
       this->BlackRooks.SetOff(xs,ys);
-      this->RemovePiece(xd,yd,player);
+      this->RemovePiece(xd,yd,this->player);
       this->BlackRooks.SetOn(xd,yd);
     }
     else{
@@ -538,7 +549,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       //throw InvalidMove("ERROR HERE");
     }
     this->player= 'w';
-    this->UnMovedWhitePawns.SetOffRank(6);
+    this->UnMovedWhitePawns.SetOffRank(5);
 
   }
   Update();

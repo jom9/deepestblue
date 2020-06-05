@@ -18,7 +18,7 @@ void BitBoard::SetOn(int x, int y){
   }
   else{
     std::cout<<x<<y;
-    throw std::logic_error("error message");
+    //throw std::logic_error("error message");
     std::cout << "Something's Here" << '\n';
   }
 }
@@ -32,9 +32,11 @@ void BitBoard::SetOff(int x,int y){
   }
 }
 void BitBoard::SetOffRank(int r){
+  int i;
 
-  std::bitset<64> bar (8*r+28);
-  this->board = (this->board |bar) ^ bar;
+  for (i =0;i<8;i++){
+    this->board[(i+8*r)]= 0 ;
+  }
 }
 bool BitBoard::IsSet(int x,int y){
   return this->board.test((x+8*y));
@@ -64,12 +66,12 @@ int BitBoard::Count(){
 void BitBoard::PrintBoard(){
   std::cout << '\n'<<'\n';
   for(int j= 0; j<8;j++){
-    std::cout<<'\t'<<(j+1)<<"\t";
+    std::cout<<' '<<(j+1)<<" ";
     for(int i=0; i<8; i++){
       if(this->IsSet(i,j)){
-        std::cout<<'\t'<<'X'<<'\t';
+        std::cout<<' '<<'X'<<' ';
       }else{
-        std::cout<<'\t'<<'0'<<'\t';
+        std::cout<<' '<<'0'<<' ';
       }
 
 

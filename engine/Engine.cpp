@@ -5,7 +5,7 @@ Node::Node(Chess * G,int xs,int ys,int xd,int yd){
   this->Game = G;
 }
 void Node::WhitePawnMoves(int x,int y){
-  //std::cout<<"PAWN\n";
+  
 
   if(this->Game->UnMovedWhitePawns.IsSet(x,y)){
     if(!this->Game->WhitePieces.IsSet(x,y-1) && !this->Game->BlackPieces.IsSet(x,y-1)){
@@ -24,7 +24,7 @@ void Node::WhitePawnMoves(int x,int y){
   }
   if(BitBoard::Inside(x,y-1)){
     if(!this->Game->WhitePieces.IsSet(x,y-1) && !this->Game->BlackPieces.IsSet(x,y-1)){
-      Chess *G = this->Game->Copy();;
+      Chess *G = this->Game->Copy();
       G->Move(x,y,x,y-1);
       Node *Child = new Node(G,x,y,x,y-1);
       Child->Parent = this;
@@ -283,7 +283,7 @@ void Node::BlackKnightMoves(int x, int y){
         continue;
       }
       if(BitBoard::Inside(x+i,y+j) && !this->Game->BlackPieces.IsSet(x+i,y+j)){
-        std::cout<<x<<y<<x+i<<x+j<<'\n';
+
         Chess * G = this->Game->Copy();
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
@@ -430,9 +430,7 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            std::cout<<i<<j<<"B TEST";
-            this->Game->PrintBoard();
-            std::cout<<'\n';
+
             if(this->Game->BlackPieces.IsSet(i,j)){
                 if(this->Game->BlackKing.IsSet(i,j)){
                   //std::cout<<'K'<<'\n';
@@ -440,12 +438,11 @@ void Node::GenChildren(){
                 }
 
                 else if(this->Game->BlackKnights.IsSet(i,j)){
-<<<<<<< HEAD
-                  std::cout<<"ERROR HERE?\n";
-                  this->Game->BlackKnightMoves(i,j).PrintBoard();
-=======
+
+
+
                   //std::cout<<'N'<<'\n';
->>>>>>> dfc52fd55200d36adc53d2c2d194f0277246871f
+
                   this->BlackKnightMoves(i,j);
                 }
                 else if(this->Game->BlackRooks.IsSet(i,j)){
@@ -469,8 +466,6 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            std::cout<<i<<j<<"W TEST\n";
-            this->Game->PrintBoard();
             if(this->Game->WhitePieces.IsSet(i,j)){
               if(this->Game->WhiteKing.IsSet(i,j)){
                 //std::cout<<'K'<<'\n';
@@ -539,25 +534,22 @@ void Engine::SuggestMove(){
   Node * root = new Node( &(this->CurrentGame) ,-1,-1,-1,-1);
   alphabeta(root,this->depth,-10000,10000,true);
   Node* max = new Node(root->Game->Copy(),-1,-1,-1,-1);
-<<<<<<< HEAD
 
-  max->Value =-10000;
-=======
   max->Value =-10000000;
->>>>>>> dfc52fd55200d36adc53d2c2d194f0277246871f
+
 
   for (std::list<Node * >::iterator child=root->Children.begin(); child != root->Children.end(); ++child){
     max = max->Value >= (*child)->Value? max: *child;
   }
-<<<<<<< HEAD
-  max->Game->PrintBoard();
+
+  //max->Game->PrintBoard();
   //std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
-=======
+
   //max->Game->PrintBoard(true);
   std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
   }
   catch(std::bad_alloc){
     std::cout<<"OverLoad\n";
   }
->>>>>>> dfc52fd55200d36adc53d2c2d194f0277246871f
+
 }

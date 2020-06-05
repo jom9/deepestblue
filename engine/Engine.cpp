@@ -273,6 +273,7 @@ void Node::BlackKnightMoves(int x, int y){
         continue;
       }
       if(BitBoard::Inside(x+i,y+j) && !this->Game->BlackPieces.IsSet(x+i,y+j)){
+        std::cout<<x<<y<<x+i<<x+j<<'\n';
         Chess * G = this->Game->Copy();
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
@@ -419,14 +420,18 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            //std::cout<<i<<j<<"B TEST\n";
-            //this->Game->PrintBoard(true);
+            std::cout<<i<<j<<"B TEST";
+            this->Game->PrintBoard();
+            std::cout<<'\n';
             if(this->Game->BlackPieces.IsSet(i,j)){
                 if(this->Game->BlackKing.IsSet(i,j)){
 
                   this->BlackKingMoves(i,j);
                 }
+
                 else if(this->Game->BlackKnights.IsSet(i,j)){
+                  std::cout<<"ERROR HERE?\n";
+                  this->Game->BlackKnightMoves(i,j).PrintBoard();
                   this->BlackKnightMoves(i,j);
                 }
                 else if(this->Game->BlackRooks.IsSet(i,j)){
@@ -446,8 +451,8 @@ void Node::GenChildren(){
     int i,j;
       for(j=0;j<8;j++){
         for(i=0;i<8;i++){
-            //std::cout<<i<<j<<"W TEST\n";
-            //this->Game->PrintBoard(true);
+            std::cout<<i<<j<<"W TEST\n";
+            this->Game->PrintBoard();
             if(this->Game->WhitePieces.IsSet(i,j)){
               if(this->Game->WhiteKing.IsSet(i,j)){
                 this->WhiteKingMoves(i,j);
@@ -478,7 +483,7 @@ Engine::Engine(Chess G, int depth){
 }
 float Engine::alphabeta(Node *N, int depth, float alpha, float beta, bool maximizingPlayer){
   N->GenChildren();
-  if(depth == 0 && !N->Children.empty()){
+  if(depth == 0 || N->Children.empty()){
     N->Value = Heuristic( *(N->Game) ).eval();
     return N->Value;
   }
@@ -515,5 +520,6 @@ void Engine::SuggestMove(){
   for (std::list<Node * >::iterator child=root->Children.begin(); child != root->Children.end(); ++child){
     max = max->Value >= (*child)->Value? max: *child;
   }
-  std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
+  max->Game->PrintBoard();
+  //std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
 }

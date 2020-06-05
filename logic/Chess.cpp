@@ -442,8 +442,6 @@ void Chess::Promote(int xs ,int ys, int xd,int yd){
   }
 }
 void Chess::Move(int xs,int ys, int xd, int yd){
-  //if(this->promote){Promote(xs,ys,xd,yd);
-  //return;}
 
   if( this->player == 'w' ){
     if(this->WhiteKing.IsSet(xs,ys) && this->WhiteKingMoves(xs,ys).IsSet(xd,yd) ){
@@ -463,13 +461,13 @@ void Chess::Move(int xs,int ys, int xd, int yd){
         this->UnMovedWhitePawns.SetOn(xs,5);
       }
       if(this->UnMovedBlackPawns.IsSet(xd,yd)){
-        this->RemovePiece(xd,3,this->player);
+        this->RemovePiece(xd,3,this->player);// remove the peice enpassant
       }
       this->WhitePawns.SetOff(xs,ys);
       this->RemovePiece(xd,yd,this->player);
       this->WhitePawns.SetOn(xd,yd);
       if(yd == 0){
-        //this->promote = true;
+        this->promote = true;
         return;
       }
     }
@@ -490,14 +488,12 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else{
       this->PrintBoard(true);
-      //throw InvalidMove();
+      throw InvalidMove();
     }
     this->player = 'b';
-<<<<<<< HEAD
-    this->UnMovedBlackPawns.SetOffRank(1);
-=======
+
     this->UnMovedBlackPawns.SetOffRank(2);
->>>>>>> dfc52fd55200d36adc53d2c2d194f0277246871f
+
   }
   else if( this->player == 'b'){
     if(this->BlackKing.IsSet(xs,ys)  && this->BlackKingMoves(xs,ys).IsSet(xd,yd)){
@@ -523,7 +519,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->RemovePiece(xd,yd,player);
       this->BlackPawns.SetOn(xd,yd);
       if(yd == 7){
-        //this->promote = true;
+        this->promote = true;
         return;
       }
     }
@@ -546,7 +542,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else{
       this->PrintBoard(true);
-      //throw InvalidMove("ERROR HERE");
+      throw InvalidMove();
     }
     this->player= 'w';
     this->UnMovedWhitePawns.SetOffRank(5);
@@ -559,9 +555,6 @@ void Chess::PrintBoard(){
   //std::cout<<"\033[0;31m" <<board[i][j].piece.rep<<"\033[0m" <<"\t";
   //std::cout<<"\033[0;34m"<<board[i][j].piece.rep<<"\033[0m"<<"\t"
 
-  for(int j= 0; j<8;j++){
-    //std::cout<<'\t'<<(char)(j+65)<<'\t';
-  }
   //std::cout<<'\n';
   for(int j= 0; j<8;j++){
     //std::cout<<'\t'<<(j+1)<<"\t";

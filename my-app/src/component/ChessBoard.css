@@ -1,7 +1,7 @@
 .chessboard {
     float: left;
     width: 60%;
-    height: 1200px;
+    height: 800px;
     margin: 20px;
     border: 25px solid #333;
     align-items: center;
@@ -11,10 +11,10 @@
 }
 .black {
     float: left;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     background-color: #999;
-      font-size:60px;
+      font-size:40px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
@@ -22,15 +22,17 @@
 
 .white {
     float: left;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     background-color: #fff;
-    font-size:60px;
+    font-size:40px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
 }
 .movelist {
+  overflow-y: scroll;
+  height: 600px;
   align-items: right;
   background-color: #d3dff9;
   border: 10px solid #333;
@@ -39,5 +41,14 @@
 }
 .move{
     font-size:25px;
-    border: 1px solid #333;
+    border: 2px solid #333;
+}
+
+.EngineSug{
+  height: 200px;
+  align-items: right;
+  background-color: #d3dff9;
+  border: 10px solid #333;
+  float :left;
+  width: 30% ;
 }

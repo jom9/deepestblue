@@ -11,9 +11,9 @@ class MovesList extends React.Component{
 
   }
   render(){
-    this.state.moves = this.props.moves;
-    this.state.ls = [...Array(this.props.moves.length).keys()].map((move) =><li className ="move" key={move}>{this.props.moves[move]}</li>);
-   return (<ol  className = "movelist" >{this.state.ls}</ol>);
+   return (
+     <ol  className = "movelist" >{[...Array(this.props.moves.length).keys()].map((move) =><li className ="move" key={move} >{this.props.moves[move]}</li>)}</ol>
+   );
   }
 
 

@@ -14,17 +14,65 @@ class SuggestMove extends React.Component{
       error:null,
       isLoaded:false
     };
+    //this.getMove = this.getMove.bind(this);
   }
-  componentDidMount(){
-
+  /*
+  getMove(){
     var form = new FormData();
-    form.append("player",this.state.player);
+    form.append("player",this.props.player);
     form.append("depth",this.state.depth);
-    form.append("board",this.state.board);
+    form.append("board",this.props.board);
     const response = axios.post(EngineCon, form, {
       headers: { 'Content-Type': 'multipart/form-data' },})
       .then((response) => {
-          this.setState({move:response['data']["move"],isLoaded:true})
+          this.setState({move:response['data']["move"],isLoaded:true});
+      },
+      (error) => {
+        this.setState({isLoaded: true,error:error});
+      });
+  }
+  */
+  oppPlayer(c){
+    if(c=='w'){
+      return 'b';
+    }
+    else if(c=='b'){
+      return 'w';
+    }
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextProps.board !== this.props.board && nextProps.player !== this.props.player){
+      var form = new FormData();
+      form.append("player",this.oppPlayer(this.props.player));
+      form.append("depth",this.state.depth);
+      form.append("board",this.props.board);
+      const response = axios.post(EngineCon, form, {
+        headers: { 'Content-Type': 'multipart/form-data' },})
+        .then((response) => {
+            this.setState({move:response['data']["move"],isLoaded:true});
+        },
+        (error) => {
+          this.setState({isLoaded: true,error:error});
+        });
+      return true;
+    }
+    if(nextState.move != this.state.move){
+
+      return true;
+    }
+    return false;
+
+
+  }
+  componentDidMount(){
+    var form = new FormData();
+    form.append("player",this.props.player);
+    form.append("depth",this.state.depth);
+    form.append("board",this.props.board);
+    const response = axios.post(EngineCon, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },})
+      .then((response) => {
+          this.setState({move:response['data']["move"],isLoaded:true});
       },
       (error) => {
         this.setState({isLoaded: true,error:error});
@@ -32,8 +80,6 @@ class SuggestMove extends React.Component{
   }
 
   render(){
-
-
     if (this.state.error) {
       return <h2>Error: {this.state.error.message}</h2>;
     } else if (!this.state.isLoaded) {
@@ -47,7 +93,7 @@ class SuggestMove extends React.Component{
       var s  = ranks.charAt(xs)+(8-ys)+"=>"+ranks.charAt(xd)+(8-yd);
       return (
 
-        <h2>Suggested Move (Using Depth of {this.state.depth}) is {s} :</h2>
+        <h2 className="EngineSug">Suggested Move (Using Depth of {this.state.depth}):<br/>{s}</h2>
       );
     }
 

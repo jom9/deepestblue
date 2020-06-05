@@ -3,7 +3,7 @@
 
 
 <?php
- header("Access-Control-Allow-Origin: *");
+ header("Access-Control-Allow-Origin: *");// FOR DEV SERVER ONLY!!!!!!!!
 
 if(isset($_POST['move'])){
   $move = htmlspecialchars($_POST['move']);

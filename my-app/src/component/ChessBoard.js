@@ -92,15 +92,19 @@ class Board extends React.Component{
       const response = axios.post(backLoc, form, {
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
-          console.log(response);
+          //console.log(response);
 
-          console.log(!RegExp("InvalidMove").test(response['data']['board']));
+
           if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){
-              console.log(!RegExp("InvalidMove").test(response['data']['board']));
               var editedMoves = this.state.moves;
               var move = String.fromCharCode(65 + this.state.xs)+(this.state.ys+1)+"=>"+String.fromCharCode(65 + i)+(j+1);
               editedMoves.push(move);
-              this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)});
+              var next = {pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)}
+              if(this.state != next){
+                this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)});
+              }
+
+
           }else{
               this.setState({xs : -1,ys:-1,xd:-1,yd:-1});
           }
@@ -146,18 +150,20 @@ class Board extends React.Component{
       L[i] = [<tr key={i}><th style ={{color:"#DCDCDC"}}>{8-i}</th>{this.renderRow(i)}</tr>] ;
 
     }
-    L[8]= <tr> {['','A','B','C','D','E','F','G','H'].map( (file) => <th style ={{color:"#DCDCDC"}}>{file}</th> )}</tr>;
+    L[8]= <tr key='8'>{[' ','A','B','C','D','E','F','G','H'].map( (file) => <th style ={{color:"#DCDCDC"}} key={file}>{file}</th>)}</tr>;
     return L;
   }
 
   render(){
     return(
 
-      <div className="Second">
-       <SuggestMove player={this.state.player} board={this.state.pieces}/>
+      <div style={{backgroundColor: "#282c34"}}>
 
+      <div style={{backgroundColor: "#282c34"}}>
       <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
       <MovesList moves={this.state.moves} ></MovesList>
+      </div>
+      <SuggestMove player={this.state.player} board={this.state.pieces}/>
       </div>
 
     );

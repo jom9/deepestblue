@@ -10,7 +10,7 @@ class Square extends React.Component{
 
     };
 
-    if(this.state.x%2==this.state.y%2){
+    if(this.state.x%2===this.state.y%2){
       this.state.color = "black";
     }
     else{

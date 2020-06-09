@@ -1,7 +1,7 @@
 
 import React from 'react';
 import axios from 'axios';
-var EngineCon ="http://localhost:8000/engine/SuggestMove.php";
+var EngineCon ="https://web.njit.edu/~jom9/deepestblue/engine/SuggestMove.php";
 
 class SuggestMove extends React.Component{
   constructor(props){
@@ -14,24 +14,8 @@ class SuggestMove extends React.Component{
       error:null,
       isLoaded:false
     };
-    //this.getMove = this.getMove.bind(this);
   }
-  /*
-  getMove(){
-    var form = new FormData();
-    form.append("player",this.props.player);
-    form.append("depth",this.state.depth);
-    form.append("board",this.props.board);
-    const response = axios.post(EngineCon, form, {
-      headers: { 'Content-Type': 'multipart/form-data' },})
-      .then((response) => {
-          this.setState({move:response['data']["move"],isLoaded:true});
-      },
-      (error) => {
-        this.setState({isLoaded: true,error:error});
-      });
-  }
-  */
+
   oppPlayer(c){
     if(c=='w'){
       return 'b';

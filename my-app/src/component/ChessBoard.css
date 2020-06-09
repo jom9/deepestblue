@@ -1,9 +1,9 @@
 .chessboard {
     float: left;
-    width: 60%;
-    height: 800px;
-    margin: 20px;
-    border: 25px solid #333;
+    width: 1000px;
+    height: 1000px;
+    margin: 10px;
+    border: 15px solid #333;
     align-items: center;
     justify-content: center;
     background-color: #282c34;
@@ -11,10 +11,10 @@
 }
 .black {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-color: #999;
-      font-size:40px;
+      font-size:55px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
@@ -22,10 +22,10 @@
 
 .white {
     float: left;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-color: #fff;
-    font-size:40px;
+    font-size:55px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
@@ -40,11 +40,13 @@
   width: 30% ;
 }
 .move{
-    font-size:25px;
+    font-size:20px;
     border: 2px solid #333;
 }
 
 .EngineSug{
+  overflow-y: scroll;
+  display: block;
   height: 200px;
   align-items: right;
   background-color: #d3dff9;

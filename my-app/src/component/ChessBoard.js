@@ -6,7 +6,7 @@ import MovesList from "./MovesList.js";
 import SuggestMove from "./SuggestMove.js";
 import axios from 'axios';
 
-var backLoc= "http://localhost:8000/backend/backend.php";
+var backLoc= "https://web.njit.edu/~jom9/deepestblue/backend/backend.php";
 function GetPiece(c){
 
   if(c == 'P'){
@@ -88,7 +88,9 @@ class Board extends React.Component{
 
     if (i != -1 && j != -1){
       var form = new FormData();
-      form.append("move",m);
+      form.append("move",this.state.xs + " " + this.state.ys +" "+i+" "+j);
+      form.append("board",this.state.pieces);
+      form.append("player",this.state.player);
       const response = axios.post(backLoc, form, {
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
@@ -161,10 +163,15 @@ class Board extends React.Component{
 
       <div style={{backgroundColor: "#282c34"}}>
       <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
-      <MovesList moves={this.state.moves} ></MovesList>
+
+
       </div>
+      <div style={{backgroundColor: "#282c34"}}>
+      <MovesList moves={this.state.moves} ></MovesList>
       <SuggestMove player={this.state.player} board={this.state.pieces}/>
       </div>
+      </div>
+
 
     );
   }

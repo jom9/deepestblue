@@ -18,7 +18,7 @@
   width: 40% ;
   float :left;
   background-color: #262421;
-  min-height: 50vh;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,7 +31,7 @@
   float  :right;
   background-color: #262421;
   width: 60% ;
-  min-height: 50vh;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,11 +52,7 @@
 .App-link {
   color: #61dafb;
 }
-.Second{
-  border: 25px solid #333;
-  flex-direction: column;
-  background-color: #D3D3D3;
-}
+
 
 @keyframes App-logo-spin {
   from {

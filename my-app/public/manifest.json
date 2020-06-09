@@ -1,9 +1,9 @@
 {
   "short_name": "React App",
-  "name": "Create React App Sample",
+  "name": "React App",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "whiteknight_Udx_icon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
@@ -15,7 +15,7 @@
     {
       "src": "logo512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "256x256"
     }
   ],
   "start_url": ".",

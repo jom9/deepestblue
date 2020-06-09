@@ -8,7 +8,7 @@ class InfoBox extends React.Component{
     super(props);
     this.state={
       text:"Mistakes were made! We'll get back to you on that...",
-      url:"http://localhost:8000/my-app/public/info.php"
+      url:"https://web.njit.edu/~jom9/deepestblue/my-app/public/info.php"
     };
   }
   componentDidMount(){

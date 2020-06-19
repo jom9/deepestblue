@@ -34,6 +34,11 @@ class SuggestMove extends React.Component{
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
             this.setState({move:response['data']["move"],isLoaded:true});
+            var xs = this.state.move.charAt(0);
+            var ys = this.state.move.charAt(2);
+            var xd = this.state.move.charAt(4);
+            var yd = this.state.move.charAt(6);
+            this.props.func(xs,ys,xd,yd);
         },
         (error) => {
           this.setState({isLoaded: true,error:error});
@@ -57,6 +62,11 @@ class SuggestMove extends React.Component{
       headers: { 'Content-Type': 'multipart/form-data' },})
       .then((response) => {
           this.setState({move:response['data']["move"],isLoaded:true});
+          var xs = this.state.move.charAt(0);
+          var ys = this.state.move.charAt(2);
+          var xd = this.state.move.charAt(4);
+          var yd = this.state.move.charAt(6);
+          this.props.func(xs,ys,xd,yd);
       },
       (error) => {
         this.setState({isLoaded: true,error:error});

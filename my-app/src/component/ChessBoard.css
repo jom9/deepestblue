@@ -1,4 +1,5 @@
 .chessboard {
+  position: relative;
     float: left;
     width: 1000px;
     height: 1000px;
@@ -53,4 +54,30 @@
   border: 10px solid #333;
   float :left;
   width: 30% ;
+}
+
+
+.arrow {
+  width: 120px;
+  position:absolute;
+  top:0;
+  left:0;
+  opacity: 0.5;
+}
+
+.line {
+  margin-top: 14px;
+  width: 90px;
+  background: blue;
+  height: 10px;
+  float: left;
+}
+
+.point {
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 30px solid blue;
+  float: right;
 }

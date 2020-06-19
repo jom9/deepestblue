@@ -65,14 +65,62 @@ class Board extends React.Component{
       yd:-1,
       pieces:"RNBQKBNRPPPPPPPPXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXpppppppprnbqkbnr",
       moves:[],
-      player:'w'
+      player:'w',
+      xss:0,
+      yss:0,
+      xds:0,
+      yds:0,
+
     };
 
     this.setMove = this.setMove.bind(this);
     this.SendMove = this.SendMove.bind(this);
-
+    this.getSuggestMove = this.getSuggestMove.bind(this);
+    this.setSuggestMove = this.setSuggestMove.bind(this);
   }
+  setSuggestMove(xs,ys,xd,yd){
+    this.setState({xss:xs,yss:ys,xds:xd,yds:yd});
+  }
+  getSuggestMove(){
 
+    var xs = parseFloat(this.state.xss);
+    var ys = parseFloat(this.state.yss);
+    var xd = parseFloat(this.state.xds);
+    var yd = parseFloat(this.state.yds);
+    var xspos = ((xs)*100+120);
+    var yspos = ((ys)*100+120);
+    var xdpos = ((xd)*100+80);
+    var ydpos = ((yd)*100+180);
+    var length = (Math.sqrt((xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos))-40)+"px";
+    var totalL = ((Math.sqrt((xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos)))-10)+"px";
+    var xm= (xspos+xdpos)/2;
+    var ym= (yspos+ydpos)/2;
+  if(xs!=xd){
+    var angle = "rotate("+  (Math.atan((yd-ys)/(xd-xs))*(360/6.28)+180)+"deg)";
+  }
+  else{
+    if(ys>yd){
+      var angle = "rotate(-90deg)";
+    }else{
+      var angle = "rotate(90deg)";
+    }
+  }
+    var xpos= xm+"px";
+    var ypos= ym+"px";
+
+    console.log(xs,ys,xd,yd);
+    console.log(length,xspos,yspos,angle);
+
+    return (<div className="arrow" style={{transform:angle,top:ypos,left:xpos,width:totalL}}>
+    <div className="line" style={{width:length}}></div>
+    <div className="point" ></div>
+    </div>);
+    /*
+    return (<div className="arrow" style={{transform:"rotate(45deg)"}}>
+    <div className="line" ></div>
+    <div className="point" ></div>
+    </div>);*/
+  }
 
 
   oppPlayer(c){
@@ -101,6 +149,7 @@ class Board extends React.Component{
               var editedMoves = this.state.moves;
               var move = String.fromCharCode(65 + this.state.xs)+(this.state.ys+1)+"=>"+String.fromCharCode(65 + i)+(j+1);
               editedMoves.push(move);
+              console.log(move);
               var next = {pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)}
               if(this.state != next){
                 this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)});
@@ -124,15 +173,11 @@ class Board extends React.Component{
 
   setMove(i,j){
     this.setState({x:i,y:j});
-    //var m = this.state.src + " (" + this.state.xs + "," + this.state.ys +","+this.state.xd+","+this.state.yd+")";
-    //console.log(m);
     if(this.state.xs == -1 && this.state.ys == -1){
       this.setState({xs:i,ys:j});
     }
     else if(this.state.xd == -1 && this.state.yd == -1){
-      //this.setState({xd:i,yd:j});
       this.SendMove(i,j);
-      //console.log(this.state);
     }
 
 
@@ -162,13 +207,13 @@ class Board extends React.Component{
       <div style={{backgroundColor: "#282c34"}}>
 
       <div style={{backgroundColor: "#282c34"}}>
-      <div className = "chessboard"><table  ><tbody>{this.renderBoard()}</tbody></table></div>
+      <div className = "chessboard">{this.getSuggestMove()}<table ><tbody>{this.renderBoard()}</tbody></table></div>
 
 
       </div>
       <div style={{backgroundColor: "#282c34"}}>
       <MovesList moves={this.state.moves} ></MovesList>
-      <SuggestMove player={this.state.player} board={this.state.pieces}/>
+      <SuggestMove player={this.state.player} board={this.state.pieces} func={this.setSuggestMove}/>
       </div>
       </div>
 

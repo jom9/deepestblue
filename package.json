@@ -1,0 +1,25 @@
+{
+  "name": "cppchess",
+  "version": "1.0.0",
+  "description": "Basic chess client with React frontend and php backend. C++ is used to mantain the game state, with the end goal of developing an engine.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jom9/cppchess.git"
+  },
+  "author": "Jonathan Martinez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jom9/cppchess/issues"
+  },
+  "homepage": "https://github.com/jom9/cppchess#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^3.4.1"
+  }
+}

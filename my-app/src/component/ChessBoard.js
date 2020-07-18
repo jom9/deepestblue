@@ -108,8 +108,8 @@ class Board extends React.Component{
     var xpos= xm+"px";
     var ypos= ym+"px";
 
-    console.log(xs,ys,xd,yd);
-    console.log(length,xspos,yspos,angle);
+    //console.log(xs,ys,xd,yd);
+    //console.log(length,xspos,yspos,angle);
 
     return (<div className="arrow" style={{transform:angle,top:ypos,left:xpos,width:totalL}}>
     <div className="line" style={{width:length}}></div>
@@ -136,13 +136,15 @@ class Board extends React.Component{
 
     if (i != -1 && j != -1){
       var form = new FormData();
-      form.append("move",this.state.xs + " " + this.state.ys +" "+i+" "+j);
+      form.append("move",m);
       form.append("board",this.state.pieces);
       form.append("player",this.state.player);
+      console.log(m);
+      console.log(form);
       const response = axios.post(backLoc, form, {
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
-          //console.log(response);
+          console.log(response);
 
 
           if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){

@@ -1,5 +1,6 @@
 import React from 'react';
 import './ChessBoard.css';
+
 class MovesList extends React.Component{
 
   constructor(props){

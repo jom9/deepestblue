@@ -9,40 +9,40 @@ import axios from 'axios';
 var backLoc= "https://web.njit.edu/~jom9/deepestblue/backend/backend.php";
 function GetPiece(c){
 
-  if(c == 'P'){
+  if(c === 'P'){
     return '\u265F';
   }
-  else if (c=='p') {
+  else if (c==='p') {
     return '\u2659';
   }
-  else if (c=='R') {
+  else if (c==='R') {
     return '\u265C';
   }
-  else if(c=='r'){
+  else if(c==='r'){
     return '\u2656';
   }
-  else if(c == 'K'){
+  else if(c === 'K'){
     return '\u265A';
   }
-  else if (c == 'k') {
+  else if (c === 'k') {
     return '\u2654';
   }
-  else if(c == 'N'){
+  else if(c === 'N'){
     return '\u265E';
   }
-  else if(c == 'n'){
+  else if(c === 'n'){
     return '\u2658';
   }
-  else if (c=='Q'){
+  else if (c==='Q'){
     return '\u265B';
   }
-  else if(c == 'q'){
+  else if(c === 'q'){
       return '\u2655';
   }
-  else if (c == 'B') {
+  else if (c === 'B') {
     return '\u265D';
   }
-  else if(c =='b'){
+  else if(c === 'b'){
     return '\u2657';
   }
   else{
@@ -95,52 +95,47 @@ class Board extends React.Component{
     var totalL = ((Math.sqrt((xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos)))-10)+"px";
     var xm= (xspos+xdpos)/2;
     var ym= (yspos+ydpos)/2;
-  if(xs!=xd){
-    var angle = "rotate("+  (Math.atan((yd-ys)/(xd-xs))*(360/6.28)+180)+"deg)";
+  var angle ='';
+  if(xs!==xd){
+    angle = "rotate("+  (Math.atan((yd-ys)/(xd-xs))*(360/6.28)+180)+"deg)";
   }
   else{
+
     if(ys>yd){
-      var angle = "rotate(-90deg)";
+      angle = "rotate(-90deg)";
     }else{
-      var angle = "rotate(90deg)";
+      angle = "rotate(90deg)";
     }
   }
     var xpos= xm+"px";
     var ypos= ym+"px";
 
-    //console.log(xs,ys,xd,yd);
-    //console.log(length,xspos,yspos,angle);
 
     return (<div className="arrow" style={{transform:angle,top:ypos,left:xpos,width:totalL}}>
     <div className="line" style={{width:length}}></div>
     <div className="point" ></div>
     </div>);
-    /*
-    return (<div className="arrow" style={{transform:"rotate(45deg)"}}>
-    <div className="line" ></div>
-    <div className="point" ></div>
-    </div>);*/
+
   }
 
 
   oppPlayer(c){
-    if(c=='w'){
+    if(c==='w'){
       return 'b';
     }
-    else if(c=='b'){
+    else if(c==='b'){
       return 'w';
     }
   }
   SendMove(i,j){
     var m = this.state.src + " " + this.state.xs + " " + this.state.ys +" "+i+" "+j;
 
-    if (i != -1 && j != -1){
+    if (i !== -1 && j !== -1){
       var form = new FormData();
       form.append("move",m);
       form.append("board",this.state.pieces);
       form.append("player",this.state.player);
-      console.log(m);
-      console.log(form);
+
       const response = axios.post(backLoc, form, {
         headers: { 'Content-Type': 'multipart/form-data' },})
         .then((response) => {
@@ -149,9 +144,10 @@ class Board extends React.Component{
 
           if(!RegExp("InvalidMove").test(response['data']['board']) && response['data']['board']!= this.state.pieces ){
               var editedMoves = this.state.moves;
-              var move = String.fromCharCode(65 + this.state.xs)+(this.state.ys+1)+"=>"+String.fromCharCode(65 + i)+(j+1);
+              var piece = GetPiece(  this.state.pieces.charAt(this.state.xs+this.state.ys*8)  )
+              var move =  piece+ String.fromCharCode(65 + this.state.xs)+(this.state.ys+1)+"=>"+String.fromCharCode(65 + i)+(j+1);
               editedMoves.push(move);
-              console.log(move);
+
               var next = {pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)}
               if(this.state != next){
                 this.setState({pieces:response['data']['board'],moves:editedMoves,src : "cache", xs : -1,ys:-1,xd:-1,yd:-1,player:this.oppPlayer(this.state.player)});
@@ -175,10 +171,10 @@ class Board extends React.Component{
 
   setMove(i,j){
     this.setState({x:i,y:j});
-    if(this.state.xs == -1 && this.state.ys == -1){
+    if(this.state.xs === -1 && this.state.ys === -1){
       this.setState({xs:i,ys:j});
     }
-    else if(this.state.xd == -1 && this.state.yd == -1){
+    else if(this.state.xd === -1 && this.state.yd === -1){
       this.SendMove(i,j);
     }
 
@@ -223,4 +219,5 @@ class Board extends React.Component{
     );
   }
 }
+
 export default  Board;

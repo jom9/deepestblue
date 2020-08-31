@@ -1,12 +1,15 @@
 
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import './ChessBoard.css';
 import Square from "./Square.js";
 import MovesList from "./MovesList.js";
 import SuggestMove from "./SuggestMove.js";
+import $ from "jquery";
 import axios from 'axios';
 
 var backLoc= "https://web.njit.edu/~jom9/deepestblue/backend/backend.php";
+
 function GetPiece(c){
 
   if(c === 'P'){
@@ -87,34 +90,46 @@ class Board extends React.Component{
     var ys = parseFloat(this.state.yss);
     var xd = parseFloat(this.state.xds);
     var yd = parseFloat(this.state.yds);
-    var xspos = ((xs)*100+120);
-    var yspos = ((ys)*100+120);
-    var xdpos = ((xd)*100+80);
-    var ydpos = ((yd)*100+180);
-    var length = (Math.sqrt((xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos))-40)+"px";
-    var totalL = ((Math.sqrt((xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos)))-10)+"px";
-    var xm= (xspos+xdpos)/2;
-    var ym= (yspos+ydpos)/2;
-  var angle ='';
-  if(xs!==xd){
-    angle = "rotate("+  (Math.atan((yd-ys)/(xd-xs))*(360/6.28)+180)+"deg)";
-  }
-  else{
+    var xspos = ((xs)*100+120);// 100 is length of cell
+    var yspos = ((ys)*100+139);
+    var xdpos = ((xd)*100+120);
+    var ydpos = ((yd)*100+139);
+    //const canvas = this.refs.canvas;
+    //const ctx = canvas.getContext("2d");
+    //canvas.width
+    var length = Math.sqrt( (xspos-xdpos)*(xspos-xdpos)+(yspos-ydpos)*(yspos-ydpos) );
 
-    if(ys>yd){
-      angle = "rotate(-90deg)";
-    }else{
-      angle = "rotate(90deg)";
-    }
-  }
-    var xpos= xm+"px";
-    var ypos= ym+"px";
+      var angle = Math.atan2( (yd-ys) , (xd - xs) )*(360/6.28) -45;
 
 
-    return (<div className="arrow" style={{transform:angle,top:ypos,left:xpos,width:totalL}}>
-    <div className="line" style={{width:length}}></div>
-    <div className="point" ></div>
-    </div>);
+    const arrow = {
+      head:{
+        position:'absolute',
+        borderColor: "#CBEEFF",
+        borderTopWidth:0,
+        borderRightWidth:10,
+        borderBottomWidth:10,
+        borderLeftWidth:0,
+        padding: 10,
+        display: 'inline-block',
+        transform: 'rotate('+angle+'deg)',
+        top:ydpos,
+        left:xdpos
+      },
+      line:{
+      position:'absolute',
+      top:yspos+7,
+      left:xspos+15,
+      backgroundColor:"#CBEEFF",
+      width:length,
+      height:7,
+      transformOrigin: '0% 50%',
+      transform: 'rotate('+(angle+45)+'deg)',
+      }
+    };
+
+
+    return <div style={{position:'absolute',top:0,left:0}}><View style={arrow.head}/><View style={arrow.line}/></div>
 
   }
 

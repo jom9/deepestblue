@@ -49,7 +49,7 @@ class SuggestMove extends React.Component{
   constructor(props){
     super(props);
     this.state ={
-      depth:5, // depth of search
+      depth:25, // depth of search
       board:this.props.board, // board is sent
       player:this.props.player,// player who's on the play
       move:"Test",// initially the move is empty, once it gets a response back, its put here
@@ -88,10 +88,11 @@ class SuggestMove extends React.Component{
             var yd = this.state.move.charAt(6);
 
 
-            this.props.func(xs,ys,xd,yd);
-            var piece = GetPiece(nextProps.board.charAt(Number(xs) +  Number(ys*8))  );
-            this.setState({xs:xs,ys:ys,xd:xd,yd:yd, board:nextProps.board,piece:piece});
+            this.props.func(Number(xs),Number(ys),Number(xd),Number(yd));
+            var piece = GetPiece(  nextProps.board.charAt(Number(xs) +  Number(ys*8))  );
 
+            this.setState({xs:xs,ys:ys,xd:xd,yd:yd, board:nextProps.board,piece:piece});
+            console.log(this.state)
         },
         (error) => {
           this.setState({isLoaded: true,error:error});
@@ -119,7 +120,7 @@ class SuggestMove extends React.Component{
           var ys = this.state.move.charAt(2);
           var xd = this.state.move.charAt(4);
           var yd = this.state.move.charAt(6);
-          var piece = GetPiece(this.props.board.charAt(Number(xs) +  Number(ys*8)  ) );
+          var piece = GetPiece( this.props.board.charAt(Number(xs) +  Number(ys*8)  ) );
           this.setState({xs:xs,ys:ys,xd:xd,yd:yd,piece:piece});
           this.props.func(xs,ys,xd,yd);
 
@@ -140,10 +141,10 @@ class SuggestMove extends React.Component{
       var ys = this.state.move.charAt(2);
       var xd = this.state.move.charAt(4);
       var yd = this.state.move.charAt(6);
+      var piece = GetPiece( this.props.board.charAt(Number(xs) +  Number(ys*8)  ) );
 
 
-
-      var s  = this.state.piece + ranks.charAt(xs)+(8-ys)+"=>"+ranks.charAt(xd)+(8-yd);
+      var s  = piece + ranks.charAt(xs)+(8-ys)+"=>"+ranks.charAt(xd)+(8-yd);
 
       return (
 

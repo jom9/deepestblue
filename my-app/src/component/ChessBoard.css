@@ -39,22 +39,21 @@
   background-color: #d3dff9;
   border: 10px solid #333;
   float :left;
-  width: 30% ;
+  width: 10% ;
 }
 .move{
-    font-size:20px;
+    font-size:30px;
     border: 2px solid #333;
 }
 
 .EngineSug{
-  overflow-y: scroll;
   display: block;
   height: 200px;
   align-items: right;
   background-color: #d3dff9;
   border: 10px solid #333;
   float :left;
-  width: 30% ;
+  width: 10% ;
 }
 
 

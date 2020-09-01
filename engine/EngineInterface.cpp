@@ -1,7 +1,8 @@
 #include "Engine.h"
 #include "../backend/CreateGame.h"
 #include "../logic/Chess.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 using namespace std;
 int main(int argc,char ** argv){
 

@@ -3,7 +3,7 @@
 // Third Edition (C++)" by Clifford A. Shaffer.
 // Source code Copyright (C) 2007-2011 by Clifford A. Shaffer.
 
-
+#include "book.h"
 template <typename E> class List { // List ADT
 private:
   void operator =(const List&) {}      // Protect assignment

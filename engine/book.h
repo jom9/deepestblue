@@ -20,20 +20,21 @@ using std::ostream;
 const int defaultSize = 10; // Default size
 
 // Return true iff "x" is even
-inline bool EVEN(int x) { return (x % 2) == 0; }
+//inline bool EVEN(int x) { return (x % 2) == 0; }
 
 // Return true iff "x" is odd
-inline bool ODD(int x) { return (x % 2) != 0; }
+//inline bool ODD(int x) { return (x % 2) != 0; }
 
 // Assert: If "val" is false, print a message and terminate
 // the program
+/*
 void Assert(bool val, string s) {
   if (!val) { // Assertion failed -- close the program
     cout << "Assertion Failed: " << s << endl;
     exit(-1);
   }
 }
-
+*/
 // Swap two elements in a generic array
 template<typename E>
 inline void swap(E A[], int i, int j) {
@@ -70,16 +71,12 @@ inline void swap(char* i, char* j) {
 #define INFINITY 9999
 
 // Timing variables and functions
-unsigned tstart = 0;  // Time at beginning of timed section
+//unsigned tstart = 0;  // Time at beginning of timed section
 
 // Initialize the program timer
-void Settime() { tstart = (unsigned) clock(); }
+//void Settime() { tstart = (unsigned) clock(); }
 
 // Return the elapsed time since the last call to Settime
-double Gettime() {
-  unsigned tcurr = (unsigned) clock();
-  return (double)(tcurr - tstart)/(double)CLOCKS_PER_SEC;
-}
 
 // Your basic int type as an object.
 class Int {
@@ -95,7 +92,3 @@ public:
 };
 
 // Let us print out Ints easily
-ostream& operator<<(ostream& s, const Int& i)
-  { return s << i.key(); }
-ostream& operator<<(ostream& s, const Int* i)
-  { return s << i->key(); }

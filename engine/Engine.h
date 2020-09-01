@@ -5,16 +5,17 @@
 
 
 #include "Heuristic.h"
-#include <tuple>
-#include <list>
+
+// Include doubly linked list implementation
+#include "dlist.h"
 class Node{
   public:
-    float Value = 0;
+    float Value;// = 0;
     Chess * Game;
     Node * Parent;
-    std::tuple <int,int,int,int> move;
+    int move[4];
     void GenChildren();
-    std::list<Node *> Children;
+    LList<Node *> Children;
 
     void WhitePawnMoves(int x,int y);
     void WhiteKnightMoves(int x, int y);

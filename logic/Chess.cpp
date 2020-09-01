@@ -488,6 +488,7 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else{
       this->PrintBoard(true);
+      this->PrintBoard();
       throw InvalidMove();
     }
     this->player = 'b';
@@ -542,6 +543,8 @@ void Chess::Move(int xs,int ys, int xd, int yd){
     }
     else{
       this->PrintBoard(true);
+      
+      this->PrintBoard();
       throw InvalidMove();
     }
     this->player= 'w';

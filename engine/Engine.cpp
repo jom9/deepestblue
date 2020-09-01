@@ -1,8 +1,14 @@
 #include "Engine.h"
 #include <iostream>
+
 Node::Node(Chess * G,int xs,int ys,int xd,int yd){
-  this->move = std::make_tuple(xs,ys,xd,yd);
+  //this->move = {xs,ys,xd,yd};
+  this->move[0] = xs;
+  this->move[1] = ys;
+  this->move[2] = xd;
+  this->move[3] = yd;
   this->Game = G;
+  this->Value = 0;
 }
 void Node::WhitePawnMoves(int x,int y){
   
@@ -16,7 +22,7 @@ void Node::WhitePawnMoves(int x,int y){
 
         Node *Child = new Node(G,x,y,x,y-2);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
 
     }
@@ -28,7 +34,7 @@ void Node::WhitePawnMoves(int x,int y){
       G->Move(x,y,x,y-1);
       Node *Child = new Node(G,x,y,x,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
   }
   if(BitBoard::Inside(x-1,y-1)){
@@ -37,14 +43,14 @@ void Node::WhitePawnMoves(int x,int y){
       G->Move(x,y,x-1,y-1);
       Node *Child = new Node(G,x,y,x-1,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
     else if(this->Game->UnMovedBlackPawns.IsSet(x-1,y-1)){
       Chess *G = this->Game->Copy();
       G->Move(x,y,x-1,y-1);
       Node *Child = new Node(G,x,y,x-1,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
   }
   if(BitBoard::Inside(x+1,y-1)){
@@ -53,21 +59,21 @@ void Node::WhitePawnMoves(int x,int y){
       G->Move(x,y,x+1,y-1);
       Node *Child = new Node(G,x,y,x+1,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
     else if(this->Game->UnMovedBlackPawns.IsSet(x+1,y-1)){
       Chess * G = this->Game->Copy();
       G->Move(x,y,x+1,y-1);
       Node *Child = new Node(G,x,y,x+1,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
   }
 }
 void Node::WhiteKnightMoves(int x, int y){
   for(int j = -2; j<3; j++){
     for(int i = -2; i<3; i++){
-      if(i==0 || j==0 || (i==j)){
+      if(i==0 || j==0 || (i==j) || (i==-j)){
         continue;
       }
       if(BitBoard::Inside(x+i,y+j) && !this->Game->WhitePieces.IsSet(x+i,y+j)){
@@ -76,7 +82,7 @@ void Node::WhiteKnightMoves(int x, int y){
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
     }
   }
@@ -90,7 +96,7 @@ void Node::WhiteBishopMoves(int x, int y){
     G->Move(x,y,x+i,y+i);
     Node *Child = new Node(G,x,y,x+i,y+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->BlackPieces.IsSet(x+i,y+i) ){
       break;
@@ -104,7 +110,7 @@ void Node::WhiteBishopMoves(int x, int y){
     G->Move(x,y,x-i,y-i);
     Node *Child = new Node(G,x,y,x-i,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->BlackPieces.IsSet(x-i,y-i) ){
       break;
     }
@@ -117,7 +123,7 @@ void Node::WhiteBishopMoves(int x, int y){
     G->Move(x,y,x+i,y-i);
     Node *Child = new Node(G,x,y,x+i,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->BlackPieces.IsSet(x+i,y-i) ){
       break;
@@ -131,7 +137,7 @@ void Node::WhiteBishopMoves(int x, int y){
     G->Move(x,y,x-i,y+i);
     Node *Child = new Node(G,x,y,x-i,x+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->BlackPieces.IsSet(x-i,y+i) ){
       break;
@@ -148,7 +154,7 @@ void Node::WhiteRookMoves(int x, int y){
     G->Move(x,y,x+i,y);
     Node *Child = new Node(G,x,y,x+i,y);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->BlackPieces.IsSet(x+i,y) ){
       break;
     }
@@ -161,7 +167,7 @@ void Node::WhiteRookMoves(int x, int y){
     G->Move(x,y,x-i,y);
     Node *Child = new Node(G,x,y,x-i,y);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->BlackPieces.IsSet(x-i,y) ){
       break;
     }
@@ -174,7 +180,7 @@ void Node::WhiteRookMoves(int x, int y){
     G->Move(x,y,x,y-i);
     Node *Child = new Node(G,x,y,x,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->BlackPieces.IsSet(x,y-i) ){
       break;
@@ -188,7 +194,7 @@ void Node::WhiteRookMoves(int x, int y){
     G->Move(x,y,x,y+i);
     Node *Child = new Node(G,x,y,x,y+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->BlackPieces.IsSet(x,y+i) ){
       break;
@@ -213,7 +219,7 @@ void Node::WhiteKingMoves(int x,int y){
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
 
     }
@@ -228,7 +234,7 @@ void Node::BlackPawnMoves(int x,int y){
         G->Move(x,y,x,y+2);
         Node *Child = new Node(G,x,y,x,y+2);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
 
   }
@@ -239,7 +245,7 @@ void Node::BlackPawnMoves(int x,int y){
       G->Move(x,y,x,y+1);
       Node *Child = new Node(G,x,y,x,y+1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
 
   }
@@ -249,14 +255,14 @@ void Node::BlackPawnMoves(int x,int y){
       G->Move(x,y,x-1,y+1);
       Node *Child = new Node(G,x,y,x-1,y+1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
     else if(this->Game->UnMovedWhitePawns.IsSet(x-1,y+1)){
       Chess * G = this->Game->Copy();
       G->Move(x,y,x-1,y+1);
       Node *Child = new Node(G,x,y,x-1,y-1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
   }
   if(BitBoard::Inside(x+1,y+1)){
@@ -265,21 +271,21 @@ void Node::BlackPawnMoves(int x,int y){
       G->Move(x,y,x+1,y+1);
       Node *Child = new Node(G,x,y,x+1,y+1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
     else if(this->Game->UnMovedWhitePawns.IsSet(x+1,y+1)){
       Chess * G = this->Game->Copy();
       G->Move(x,y,x+1,y+1);
       Node *Child = new Node(G,x,y,x+1,y+1);
       Child->Parent = this;
-      this->Children.push_back(Child);
+      this->Children.append(Child);
     }
   }
 }
 void Node::BlackKnightMoves(int x, int y){
   for(int j = -2; j<3; j++){
     for(int i = -2; i<3; i++){
-      if(i==0 || j==0 ||(i==j)){
+      if(i==0 || j==0 ||(i==j)|| (i==-j) ){
         continue;
       }
       if(BitBoard::Inside(x+i,y+j) && !this->Game->BlackPieces.IsSet(x+i,y+j)){
@@ -288,7 +294,7 @@ void Node::BlackKnightMoves(int x, int y){
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
     }
   }
@@ -301,7 +307,7 @@ void Node::BlackBishopMoves(int x, int y){
     G->Move(x,y,x+i,y+i);
     Node *Child = new Node(G,x,y,x+i,y+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x+i,y+i) ){
       break;
     }
@@ -313,7 +319,7 @@ void Node::BlackBishopMoves(int x, int y){
     G->Move(x,y,x-i,y-i);
     Node *Child = new Node(G,x,y,x-i,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x-i,y-i) ){
       break;
     }
@@ -325,7 +331,7 @@ void Node::BlackBishopMoves(int x, int y){
     G->Move(x,y,x+i,y-i);
     Node *Child = new Node(G,x,y,x+i,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x+i,y-i) ){
       break;
     }
@@ -337,7 +343,7 @@ void Node::BlackBishopMoves(int x, int y){
     G->Move(x,y,x-i,y+i);
     Node *Child = new Node(G,x,y,x-i,y+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x-i,y+i) ){
       break;
     }
@@ -354,7 +360,7 @@ void Node::BlackRookMoves(int x, int y){
     G->Move(x,y,x+i,y);
     Node *Child = new Node(G,x,y,x+i,y);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x+i,y) ){
       break;
     }
@@ -367,7 +373,7 @@ void Node::BlackRookMoves(int x, int y){
     G->Move(x,y,x-i,y);
     Node *Child = new Node(G,x,y,x-i,y);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
     if( this->Game->WhitePieces.IsSet(x-i,y) ){
       break;
     }
@@ -380,7 +386,7 @@ void Node::BlackRookMoves(int x, int y){
     G->Move(x,y,x,y-i);
     Node *Child = new Node(G,x,y,x,y-i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->WhitePieces.IsSet(x,y-i) ){
       break;
@@ -394,7 +400,7 @@ void Node::BlackRookMoves(int x, int y){
     G->Move(x,y,x,y+i);
     Node *Child = new Node(G,x,y,x,y+i);
     Child->Parent = this;
-    this->Children.push_back(Child);
+    this->Children.append(Child);
 
     if( this->Game->WhitePieces.IsSet(x,y+i) ){
       break;
@@ -418,7 +424,7 @@ void Node::BlackKingMoves(int x,int y){
         G->Move(x,y,x+i,y+j);
         Node *Child = new Node(G,x,y,x+i,y+j);
         Child->Parent = this;
-        this->Children.push_back(Child);
+        this->Children.append(Child);
       }
 
     }
@@ -502,28 +508,37 @@ Engine::Engine(Chess G, int depth){
 float Engine::alphabeta(Node *N, int depth, float alpha, float beta, bool maximizingPlayer){
   //N->Game->PrintBoard(true);
   N->GenChildren();
-  if(depth == 0 || N->Children.empty()){
+  if(depth == 0 || N->Children.length()==0){
     N->Value = Heuristic( *(N->Game) ).eval();
     return N->Value;
   }
+  int i;
+  int currpos = N->Children.currPos();
+  N->Children.moveToStart();
   if(maximizingPlayer){
     float value = -10000;
-    for(std::list<Node *>::iterator child=N->Children.begin(); child != N->Children.end(); ++child){
-      float val = this->alphabeta(*child, depth -1,alpha, beta, false);
+    
+    for(i=0;i<currpos;i++){
+      Node * child = N->Children.getValue();
+      float val = this->alphabeta(child, depth -1,alpha, beta, false);
       value =  val>value? val:value;
       alpha = alpha>value? alpha: value;
             if(alpha >= beta){break;}// (* β cut-off *)
+      N->Children.next();
     }
     N->Value = value;
     return value;
   }
   else{
     float value = 10000;
-    for (std::list<Node *>::iterator child=N->Children.begin(); child != N->Children.end(); ++child){
-      float val = this->alphabeta(*child,depth - 1,alpha,beta,true);
+    for (i=0;i<currpos;i++){
+    Node * child = N->Children.getValue();
+      
+      float val = this->alphabeta(child,depth - 1,alpha,beta,true);
       value = val>value? value:val;
       beta = beta>value? value:beta;
       if(beta<=alpha){break;}
+      N->Children.next();
     }
     N->Value = value;
     return value;
@@ -537,16 +552,20 @@ void Engine::SuggestMove(){
 
   max->Value =-10000000;
 
-
-  for (std::list<Node * >::iterator child=root->Children.begin(); child != root->Children.end(); ++child){
-    max = max->Value >= (*child)->Value? max: *child;
+  int currpos = root->Children.currPos();
+  root->Children.moveToStart();
+  int i;
+  for (i=0;i<root->Children.length();i++){
+   Node *child = root->Children.getValue();
+    max = max->Value >= (child)->Value? max: child;
+    root->Children.next();
   }
 
   //max->Game->PrintBoard();
   //std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
 
   //max->Game->PrintBoard(true);
-  std::cout<<std::get<0>(max->move)<<' '<<std::get<1>(max->move)<<' '<<std::get<2>(max->move)<<' '<<std::get<3>(max->move);
+  std::cout<<max->move[0]<<' '<<max->move[1]<<' '<<max->move[2]<<' '<<max->move[3];
   }
   catch(std::bad_alloc){
     std::cout<<"OverLoad\n";

@@ -4,6 +4,9 @@
 // Source code Copyright (C) 2007-2011 by Clifford A. Shaffer.
 
 // Doubly linked list link node with freelist support
+
+
+
 template <typename E> class Link {
 private:
   static Link<E>* freelist; // Reference to freelist head

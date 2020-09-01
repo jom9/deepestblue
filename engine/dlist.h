@@ -9,6 +9,9 @@
 // First, get the declaration for the base list class
 #include "list.h"
 
+#include "dlinkFL.h"
+
+
 // This is the declaration for DList. It is broken up because the
 // methods that appear in the book are in a separate file.
 // Linked list implementation
@@ -61,7 +64,7 @@ public:
 
   // Move down list to "pos" position
   void moveToPos(int pos) {
-    Assert ((pos>=0)&&(pos<=cnt), "Position out of range");
+    //Assert ((pos>=0)&&(pos<=cnt), "Position out of range");
     curr = head;
     for(int i=0; i<pos; i++) curr = curr->next;
   }

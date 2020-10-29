@@ -1,0 +1,1 @@
+Tests in logic tests folder look to test the c++ game logic.

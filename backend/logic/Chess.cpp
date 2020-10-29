@@ -487,8 +487,8 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->WhiteRooks.SetOn(xd,yd);
     }
     else{
-      this->PrintBoard(true);
-      this->PrintBoard();
+      //this->PrintBoard(true);
+      //this->PrintBoard();
       throw InvalidMove();
     }
     this->player = 'b';
@@ -542,9 +542,9 @@ void Chess::Move(int xs,int ys, int xd, int yd){
       this->BlackRooks.SetOn(xd,yd);
     }
     else{
-      this->PrintBoard(true);
-      
-      this->PrintBoard();
+      //this->PrintBoard(true);
+
+      //this->PrintBoard();
       throw InvalidMove();
     }
     this->player= 'w';
